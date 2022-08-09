@@ -49,7 +49,7 @@ package CfA.Streams is
      with Convention => C;
 
    type Write_Function is access
-     function (Stream : CLAP_Input_Stream_Access;
+     function (Stream : CLAP_Output_Stream_Access;
                Buffer : Void_Ptr := System.Null_Address;
                Size   : UInt64_t)
                return Int64_t

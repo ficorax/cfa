@@ -13,6 +13,9 @@ package Latency is
       return UInt32_t
      with Export => True, Convention => C;
 
+   My_Plug_Latency     : CLAP_Plugin_Latency :=
+                           (Get => Example_Latency_Get'Access);
+
    package Convert_Address_Latency is
      new System.Address_To_Access_Conversions (CLAP_Host_Latency);
 

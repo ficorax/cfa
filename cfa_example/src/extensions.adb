@@ -10,20 +10,6 @@ with Note_Ports; use Note_Ports;
 
 package body Extensions is
 
-   My_Plug_Audio_Ports : CLAP_Plugin_Audio_Ports :=
-                           (Example_Audio_Ports_Count'Access,
-                            Example_Audio_Ports_Get'Access
-                           );
-   My_Plug_Note_Ports  : CLAP_Plugin_Note_Ports :=
-                           (Example_Note_Ports_Count'Access,
-                            Example_Note_Ports_Get'Access
-                           );
-
-   My_Plug_Latency     : CLAP_Plugin_Latency :=
-                           (Get => Example_Latency_Get'Access);
-
-   -------------------------------------------------------------------------------------------------
-
    -------------------------------
    --  My_Plugin_Get_Extension  --
    -------------------------------

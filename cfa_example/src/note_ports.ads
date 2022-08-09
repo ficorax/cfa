@@ -20,4 +20,9 @@ package Note_Ports is
       return Bool
      with Export => True, Convention => C;
 
+   My_Plug_Note_Ports  : CLAP_Plugin_Note_Ports :=
+                           (Example_Note_Ports_Count'Access,
+                            Example_Note_Ports_Get'Access
+                           );
+
 end Note_Ports;

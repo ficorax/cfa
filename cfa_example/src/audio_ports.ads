@@ -20,4 +20,9 @@ package Audio_Ports is
       return Bool
    with Export => True, Convention => C;
 
+   My_Plug_Audio_Ports : CLAP_Plugin_Audio_Ports :=
+                           (Example_Audio_Ports_Count'Access,
+                            Example_Audio_Ports_Get'Access
+                           );
+
 end Audio_Ports;
