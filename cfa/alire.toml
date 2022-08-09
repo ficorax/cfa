@@ -1,0 +1,7 @@
+name = "cfa"
+description = "CLAP for Ada - thin bindings"
+version = "0.0.1"
+
+authors = ["Marek Kuziel"]
+maintainers = ["Marek Kuziel <ficorax@pm.me>"]
+maintainers-logins = ["ficorax"]
