@@ -5,3 +5,9 @@ version = "0.0.1"
 authors = ["Marek Kuziel"]
 maintainers = ["Marek Kuziel <ficorax@pm.me>"]
 maintainers-logins = ["ficorax"]
+
+[[pins]]
+cfa = { path = "../cfa" }
+
+[[depends-on]]
+cfa = "0.0.1"

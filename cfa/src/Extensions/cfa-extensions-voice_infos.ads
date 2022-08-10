@@ -32,7 +32,7 @@
 with CfA.Hosts;
 with CfA.Plugins;
 
-package CfA.Extensions.Draft.Voice_Infos is
+package CfA.Extensions.Voice_Infos is
 
    CLAP_Ext_Voice_Info : constant Char_Ptr
      := Interfaces.C.Strings.New_String ("clap.voice-info.draft/0");
@@ -105,4 +105,4 @@ package CfA.Extensions.Draft.Voice_Infos is
    type CLAP_Host_Voice_Info_Access is access all CLAP_Host_Voice_Info
      with Convention => C;
 
-end CfA.Extensions.Draft.Voice_Infos;
+end CfA.Extensions.Voice_Infos;
