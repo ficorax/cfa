@@ -202,16 +202,36 @@ package CfA.Extensions.Params is
 
          Cookie : Void_Ptr := System.Null_Address;
          --  This value is optional and set by the plugin.
-         --  Its purpose is to provide a fast access to the plugin parameter:
+         --  Its purpose is to provide a fast access to the
+         --  plugin parameter object by caching its pointer.
+         --  For instance:
          --
-         --     P : Parameter := Find_Parameter (Param_ID);
+         --  in CLAP_Plugin_Params.Get_Info:
+         --     P : Parameter_Access := Find_Parameter (Param_ID);
          --     Param_Info.Cookie := P;
          --
-         --     --  and later on
-         --     P : Parameter := Parameter (Cookie);
+         --  later, in Clap_Plugin.Process:
          --
-         --  It is invalidated on CLAP_Host_Params.Rescan (Rescan_All) and when
-         --  the plugin is destroyed.
+         --     P : Parameter_Access := Event.Cookie;
+         --
+         --     if P = null then [[unlikely]]
+         --        P := Find_Parameter (Event.Param_ID);
+         --     end if;
+         --
+         --  where Find_Parameter is a function the plugin implements
+         --  to map parameter ids to internal objects.
+         --
+         --  Important:
+         --   - The cookie is invalidated by a call to
+         --     CLAP_Host_Params.Rescan (CLAP_Param_Rescan_All) or when the plugin is
+         --     destroyed.
+         --   - The host will either provide the cookie as issued or null
+         --     in events addressing parameters.
+         --   - The plugin must gracefully handle the case of a cookie
+         --     which is null.
+         --   - Many plugins will process the parameter events more quickly if the host
+         --     can provide the cookie in a faster time than a hashmap lookup per param
+         --     per event.
 
          Name   : char_array (0 .. CLAP_Name_Size - 1);
          --  the display name
@@ -283,6 +303,11 @@ package CfA.Extensions.Params is
      with Convention => C;
    --  Flushes a set of parameter changes.
    --  This method must not be called concurrently to CLAP_Plugin.Process.
+   --
+   --  Note: if the plugin is processing, then the Process call will already achieve the
+   --  parameter update (bi-directionnal), so a call to flush isn't required, also be aware
+   --  that the plugin may use the sample offset in Process, while this information would be
+   --  lost within Flush.
    --
    --  [active ? audio-thread : main-thread]
 

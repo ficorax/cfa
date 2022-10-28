@@ -53,7 +53,11 @@ package CfA.Extensions.Draft.File_References is
    type CLAP_File_Reference is
       record
          Resource_ID : CLAP_ID;
+
          Belongs_To_Plugin_Collection : Bool := False;
+         --  Flag indicating that the plugin may be able to (re-)install a collection that provides
+         --  this resource. DAWs can provide a user option to ignore or include this resource during
+         --  "collect and save".
 
          Path_Capacity : Interfaces.C.size_t := 0;
          --  [in] the number of bytes reserved in path
@@ -63,7 +67,7 @@ package CfA.Extensions.Draft.File_References is
          --        Path_Capacity
 
          Path          : Char_Ptr := Null_Ptr;
-         --  [in,out] path to the file on the disk, must be null terminated, and
+         --  [in,out] absolute path to the file on the disk, must be null terminated, and
          --           may be truncated if the capacity is less than the size
       end record
      with Convention => C;
@@ -74,7 +78,7 @@ package CfA.Extensions.Draft.File_References is
    type Count_Function is access
      function (Plugin : Plugins.CLAP_Plugin_Access) return UInt32_t
      with Convention => C;
-   --  returns the number of file reference this plugin has
+   --  Returns the number of file reference this plugin has
    --  [main-thread]
 
    type Get_Function is access
@@ -83,7 +87,7 @@ package CfA.Extensions.Draft.File_References is
                File_Reference : CLAP_File_Reference_Access)
                return Bool
      with Convention => C;
-   --  gets the file reference at index
+   --  Gets the file reference at index
    --  returns True on success
    --  [main-thread]
 
@@ -117,12 +121,14 @@ package CfA.Extensions.Draft.File_References is
                Path        : Char_Ptr)
                return Bool
      with Convention => C;
-   --  updates the path to a file reference
+   --  Updates the path to a file reference
    --  [main-thread]
 
    type Save_Resources_Funcion is access
      function (Plugin : Plugins.CLAP_Plugin_Access) return Bool
      with Convention => C;
+   --  Request all pending changes to be flushed to disk (e.g. for destructive
+   --  sample editor plugins), needed during "collect and save".
    --  [main-thread]
 
    type CLAP_Plugin_File_Reference is
@@ -142,14 +148,15 @@ package CfA.Extensions.Draft.File_References is
    type Changed_Function is access
      procedure (Host : Hosts.CLAP_Host_Access)
      with Convention => C;
-   --  informs the host that the file references have changed, the host should
-   --  schedule a full rescan
+   --  Informs the host that the file references have changed, the host should
+   --  schedule a full rescan.
    --  [main-thread]
 
    type Set_Dirty_Funcion is access
      procedure (Host        : Hosts.CLAP_Host_Access;
                 Resource_ID : CLAP_ID)
      with Convention => C;
+   --  Informs the host that file contents have changed, a call to Save_Resources is needed.
    --  [main-thread]
 
    type CLAP_Host_File_Reference is

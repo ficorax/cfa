@@ -31,13 +31,13 @@ package CfA.Version is
 
          Major    : UInt32_t := 1;
          Minor    : UInt32_t := 1;
-         Revision : UInt32_t := 1;
+         Revision : UInt32_t := 2;
       end record
    with Convention => C;
 
    function CLAP_Version_Is_Compatible (V : CLAP_Version) return Bool is
      (Bool (V.Major >= 1));
 
-   CLAP_Version_Init : constant CLAP_Version := (1, 1, 1);
+   CLAP_Version_Init : constant CLAP_Version := (others => <>);
 
 end CfA.Version;

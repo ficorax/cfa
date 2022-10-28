@@ -65,8 +65,8 @@ package CfA.Plugin_Factory is
    --  It is very important to be able to scan the plugin as quickly as
    --  possible.
    --
-   --  If the content of the factory may change due to external events, like
-   --  the user installed
+   --  The host may use CLAP_Plugin_Invalidation_Factory to detect filesystem changes
+   --  which may change the factory's content.
    type CLAP_Plugin_Factory is
       record
          Get_Plugin_Count      : Get_Plugin_Count_Function := null;

@@ -171,7 +171,7 @@ package CfA.Extensions.GUIs is
    --  The host has no obligation to honor the plugin preference, this is just
    --  a hint.
    --  The Window_API_Access variable should be explicitly assigned as a pointer to
-   --  one of the CLAP_Window_API_ constants defined above, not copied.
+   --  one of the CLAP_Window_API constants defined above, not copied.
    --
    --  [main-thread]
 

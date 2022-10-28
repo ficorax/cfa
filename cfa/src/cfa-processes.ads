@@ -64,8 +64,9 @@ package CfA.Processes is
          Transport    : CfA.Events.CLAP_Event_Transport_Access := null;
 
          --  Audio buffers, they must have the same count as specified
-         --  by CLAP_Plugin_Audio_Ports.Get_Count.
-         --  The index maps to CLAP_Plugin_Audio_Ports.Get_Info.
+         --  by CLAP_Plugin_Audio_Ports.Count.
+         --  The index maps to CLAP_Plugin_Audio_Ports.Get.
+         --  Input buffer and its contents are read-only.
          Audio_Inputs  : Void_Ptr := System.Null_Address;
          Audio_Outputs : Void_Ptr := System.Null_Address;
 
