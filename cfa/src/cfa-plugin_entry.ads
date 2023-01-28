@@ -35,8 +35,8 @@ package CfA.Plugin_Entry is
    --    - /usr/lib/clap
    --
    --  Windows
-   --    - %CommonFilesFolder%/CLAP/
-   --    - %LOCALAPPDATA%/Programs/Common/CLAP/
+   --    - %COMMONPROGRAMFILES%\CLAP
+   --    - %LOCALAPPDATA%\Programs\Common\CLAP
    --
    --  MacOS
    --    - /Library/Audio/Plug-Ins/CLAP

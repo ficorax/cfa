@@ -31,7 +31,7 @@ package CfA.Version is
 
          Major    : UInt32_t := 1;
          Minor    : UInt32_t := 1;
-         Revision : UInt32_t := 2;
+         Revision : UInt32_t := 3;
       end record
    with Convention => C;
 

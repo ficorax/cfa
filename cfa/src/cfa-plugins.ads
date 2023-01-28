@@ -26,7 +26,7 @@ with CfA.Version;
 
 package CfA.Plugins is
 
-   type Chars_Ptr_Array_Access is access Interfaces.C.Strings.chars_ptr_array;
+   type Chars_Ptr_Array_Access is access constant Interfaces.C.Strings.chars_ptr_array;
 
    type CLAP_Plugin_Descriptor is
       record
