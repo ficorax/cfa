@@ -7,6 +7,7 @@ with CfA.Plugins; use CfA.Plugins;
 
 with CfA.Extensions.Latency; use CfA.Extensions.Latency;
 with CfA.Extensions.Log; use CfA.Extensions.Log;
+with CfA.Extensions.State; use CfA.Extensions.State;
 with CfA.Extensions.Thread_Check; use CfA.Extensions.Thread_Check;
 
 package Types is
@@ -18,6 +19,8 @@ package Types is
          Host_Latency      : CLAP_Host_Latency_Access := null;
          Host_Log          : CLAP_Host_Log_Access := null;
          Host_Thread_Check : CLAP_Host_Thread_Check_Access := null;
+         Host_State        : CLAP_Host_State_Access;
+
          Latency           : UInt32_t := 0;
       end record;
 

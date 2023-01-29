@@ -15,6 +15,7 @@ package body Audio_Ports is
    is
       pragma Unreferenced (Plugin, Is_Input);
    begin
+      --  We just declare 1 audio input and 1 audio output
       return 1;
    end Example_Audio_Ports_Count;
 

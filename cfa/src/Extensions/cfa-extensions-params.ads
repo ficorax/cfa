@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -125,7 +125,7 @@
 --           .....                  .   .
 --  before: .     .     and after: .     .
 --
---  Advices for the host:
+--  Advice for the host:
 --  - store plain values in the document (automation)
 --  - store modulation amount in plain value delta, not in percentage
 --  - when you apply a CC mapping, remember the min/max plain values so you can adjust
@@ -226,7 +226,9 @@ package CfA.Extensions.Params is
      with Convention => C, Pack, Size => 32;
    pragma Warnings (On);
 
+   -------------------------------------------------------------------------------------------------
    --  This describes a parameter
+
    type CLAP_Param_Info is
       record
 
@@ -284,6 +286,8 @@ package CfA.Extensions.Params is
    type CLAP_Param_Info_Access is access CLAP_Param_Info
      with Convention => C;
 
+   -------------------------------------------------------------------------------------------------
+
    type Count_Function is access
      function (Plugin : Plugins.CLAP_Plugin_Access) return UInt32_t
      with Convention => C;
@@ -296,39 +300,39 @@ package CfA.Extensions.Params is
                Param_Info  : CLAP_Param_Info_Access)
                return Bool
      with Convention => C;
-   --  Copies the parameter's info to param_info and returns true on success.
+   --  Copies the parameter's info to param_info. Returns True on success.
    --  [main-thread]
 
    type Get_Value_Function is access
-     function (Plugin   : Plugins.CLAP_Plugin_Access;
-               Param_ID : CLAP_ID;
-               Value    : out CLAP_Double)
+     function (Plugin    :     Plugins.CLAP_Plugin_Access;
+               Param_ID  :     CLAP_ID;
+               Out_Value : out CLAP_Double)
                return Bool
      with Convention => C;
-   --  Gets the parameter plain value.
+   --  Writes the parameter's current value to out_value. Returns True on success.
    --  [main-thread]
 
    type Value_To_Text_Function is access
-     function (Plugin   : Plugins.CLAP_Plugin_Access;
-               Param_ID : CLAP_ID;
-               Value    : CLAP_Double;
-               Display  : out Char_Ptr;
-               Size     : UInt32_t)
+     function (Plugin              : Plugins.CLAP_Plugin_Access;
+               Param_ID            : CLAP_ID;
+               Value               : CLAP_Double;
+               Out_Buffer          : Char_Ptr;
+               Out_Buffer_Capacity : UInt32_t)
                return Bool
      with Convention => C;
-   --  Formats the display text for the given parameter value.
-   --  The host should always format the parameter value to text using this
-   --  function before displaying it to the user.
-   --  [main-thread]
+   --  Fills out_buffer with a null-terminated UTF-8 string that represents the parameter at the
+   --  given 'Value' argument. eg: "2.3 kHz". Returns True on success. The host should always use
+   --  this to format parameter values before displaying it to the user. [main-thread]
 
    type Text_To_Value_Function is access
-     function (Plugin   : Plugins.CLAP_Plugin_Access;
-               Param_ID : CLAP_ID;
-               Display  : Char_Ptr;
-               Value    : CLAP_Double)
+     function (Plugin           :     Plugins.CLAP_Plugin_Access;
+               Param_ID         :     CLAP_ID;
+               Param_Value_Text :     Char_Ptr;
+               Out_Value        : out CLAP_Double)
                return Bool
      with Convention => C;
-   --  Converts the display text to a parameter value.
+   --  Converts the null-terminated UTF-8 param_value_text into a double and writes it to out_value.
+   --  Returns true on success. The host can use this to convert user input into a parameter value.
    --  [main-thread]
 
    type Flush_Function is access

@@ -14,7 +14,7 @@ package Descriptor is
                              New_String ("https://virtusada.com"),
                              New_String ("https://virtusada.com"),
                              New_String ("https://virtusada.com"),
-                             New_String ("0.0.1"),
+                             New_String ("1.4.2"),
                              New_String ("CLAP for Ada Example (based on plugin-template.c)"),
                              new Interfaces.C.Strings.chars_ptr_array'(
                                New_String (CLAP_Plugin_Feature_Instrument),

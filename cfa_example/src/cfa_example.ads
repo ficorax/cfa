@@ -17,6 +17,7 @@ package CfA_Example is
       return CLAP_Plugin_Factory_Access
      with Export => True, Convention => C;
 
+   --  This symbol will be resolved by the host
    Example_Entry : CLAP_Entry :=
                      (CLAP_Version_Init,
                       Entry_Init'Access,

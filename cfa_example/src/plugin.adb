@@ -1,5 +1,6 @@
 with CfA.Extensions.Latency; use CfA.Extensions.Latency;
 with CfA.Extensions.Log; use CfA.Extensions.Log;
+with CfA.Extensions.State; use CfA.Extensions.State;
 with CfA.Extensions.Thread_Check; use CfA.Extensions.Thread_Check;
 
 with Descriptor; use Descriptor;
@@ -7,6 +8,7 @@ with Extensions; use Extensions;
 with Latency; use Latency;
 with Log; use Log;
 with Process; use Process;
+with State; use State;
 with Thread; use Thread;
 with Types; use Types;
 
@@ -59,7 +61,7 @@ package body Plugin is
       Plug : constant Example_Plugin_Access :=
                Example_Plugin_Access (Convert_Address_My_Plugin.To_Pointer (Plugin.Plugin_Data));
    begin
-      --  Fetch host's extensions here
+      --  Make sure to check that the interface functions are not null pointers
       Plug.Host_Log := CLAP_Host_Log_Access
         (Convert_Address_Host_Log.To_Pointer
            (Plug.Host.Get_Extension (Plug.Host, CLAP_Ext_Log)));
@@ -71,6 +73,10 @@ package body Plugin is
       Plug.Host_Latency := CLAP_Host_Latency_Access
         (Convert_Address_Latency.To_Pointer
            (Plug.Host.Get_Extension (Plug.Host, CLAP_Ext_Latency)));
+
+      Plug.Host_State := CLAP_Host_State_Access
+        (Convert_Address_State.To_Pointer
+           (Plug.Host.Get_Extension (Plug.Host, CLAP_Ext_State)));
 
       return Bool'(True);
    end Example_Init;

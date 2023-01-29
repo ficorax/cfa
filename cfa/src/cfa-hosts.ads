@@ -34,7 +34,9 @@ package CfA.Hosts is
                return System.Address
    with Convention => C;
    --  Query an extension.
-   --  [thread-safe]
+   --  It is forbidden to call it before Plugin.Init.
+   --  You can call it within Plugin.Init call, and after.
+    --  [thread-safe]
 
    type Request_Restart_Function is access
      procedure (Host : CLAP_Host_Access)
@@ -68,7 +70,8 @@ package CfA.Hosts is
          Name         : Char_Ptr := Null_Ptr;  -- eg: "Bitwig Studio"
          Vendor       : Char_Ptr := Null_Ptr;  -- eg: "Bitwig GmbH"
          URL          : Char_Ptr := Null_Ptr;  -- eg: "https://bitwig.com"
-         Host_Version : Char_Ptr := Null_Ptr;  -- eg: "4.3"
+         Host_Version : Char_Ptr := Null_Ptr;
+         --  eg: "4.3", see CfA.Plugins for advice on how to format the version
 
          Get_Extension    : Get_Extension_Function := null;
          Request_Restart  : Request_Restart_Function := null;

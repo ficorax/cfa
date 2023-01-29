@@ -27,9 +27,9 @@
 --  This extension provides a way for the host to activate and de-activate audio ports.
 --  Deactivating a port provides the following benefits:
 --  - the plugin knows ahead of time that a given input is not present and can choose
---    an optimized computation path
+--    an optimized computation path,
 --  - the plugin knows that an output is not consumed by the host, and doesn't need to
---    compute it
+--    compute it.
 --
 --  Audio ports can only be activated or deactivated when the plugin is deactivated, unless
 --  Can_Activate_While_Processing returns True.
@@ -67,8 +67,8 @@ package CfA.Extensions.Draft.Audio_Ports_Activation is
      with Convention => C;
    --  Activate the given port.
    --
-   --  It is only possible to activate on the audio-thread if Can_Activate_While_Processing returns
-   --  True.
+   --  It is only possible to activate and de-activate on the audio-thread
+   --  if Can_Activate_While_Processing returns True.
    --
    --  [active ? audio-thread : main-thread]
 

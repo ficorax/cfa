@@ -15,6 +15,7 @@ package body Note_Ports is
    is
       pragma Unreferenced (Plugin, Is_Input);
    begin
+      --  We just declare 1 note input
       return 1;
    end Example_Note_Ports_Count;
 

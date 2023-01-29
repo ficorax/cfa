@@ -36,20 +36,36 @@ package CfA.Plugins is
          --  Mandatory fields must be set and must not be blank.
          --  Otherwise the fields can be null or blank, though it is safer to
          --  make them blank.
+         --
+         --  Some indications regarding id and version
+         --  - id is an arbritrary string which should be unique to your plugin,
+         --    we encourage you to use a reverse URI eg: "com.u-he.diva"
+         --  - version is an arbitrary string which describes a plugin,
+         --    it is useful for the host to understand and be able to compare two different
+         --    version strings, so here is a regex like expression which is likely to be
+         --    understood by most hosts: MAJOR(.MINOR(.REVISION)?)?( (Alpha|Beta) XREV)?
+
          ID          : Char_Ptr := Null_Ptr;
          --  eg: "com.u-he.diva", mandatory
+
          Name        : Char_Ptr := Null_Ptr;
          --  eg: "Diva", mandatory
+
          Vendor      : Char_Ptr := Null_Ptr;
          --  eg: "u-he"
+
          URL         : Char_Ptr := Null_Ptr;
          --  eg: "https://u-he.com/products/diva/"
+
          Manual_URL  : Char_Ptr := Null_Ptr;
          --  eg: "https://dl.u-he.com/manuals/plugins/diva/Diva-user-guide.pdf"
+
          Support_URL : Char_Ptr := Null_Ptr;
          --  eg: "https://u-he.com/support/"
+
          Version_Str : Char_Ptr := Null_Ptr;
          --  eg: "1.4.4"
+
          Description : Char_Ptr := Null_Ptr;
          --  eg: "The spirit of analogue"
 
@@ -65,6 +81,8 @@ package CfA.Plugins is
    type CLAP_Plugin_Descriptor_Access is access all CLAP_Plugin_Descriptor
        with Convention => C;
 
+   -------------------------------------------------------------------------------------------------
+
    type CLAP_Plugin;
    type CLAP_Plugin_Access is access all CLAP_Plugin with Convention => C;
 
@@ -73,6 +91,7 @@ package CfA.Plugins is
      with Convention => C;
    --  Must be called after creating the plugin.
    --  If init returns false, the host must destroy the plugin instance.
+   --  If init returns true, then the plugin is initialized and in the deactivated state.
    --  [main-thread]
 
    type Destroy_Function is access
@@ -145,6 +164,8 @@ package CfA.Plugins is
      with Convention => C;
    --  Query an extension.
    --  The returned pointer is owned by the plugin.
+   --  It is forbidden to call it before Plugin.Init.
+   --  You can call it within Plugin.Init call, and after.
    --  [thread-safe]
 
    type On_Main_Thread_Function is access
