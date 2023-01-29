@@ -102,7 +102,8 @@ package CfA.Extensions.Audio_Ports_Config is
                return Bool
      with Convention => C;
    --  selects the configuration designated by id
-   --  returns true if the configuration could be applied
+   --  returns true if the configuration could be applied.
+   --  Once applied the host should scan again the audio ports.
    --  [main-thread,plugin-deactivated]
 
    type CLAP_Plugin_Audio_Ports_Config is

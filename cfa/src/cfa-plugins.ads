@@ -134,6 +134,8 @@ package CfA.Plugins is
                return CfA.Processes.CLAP_Process_Status
      with Convention => C;
    --  process audio, events, ...
+   --  All the pointers coming from CLAP_Process and its nested attributes,
+   --  are valid until Process returns.
    --  [audio-thread & active_state & processing_state]
 
    type Get_Extension_Function is access

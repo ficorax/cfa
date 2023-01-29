@@ -7,7 +7,7 @@ maintainers = ["Marek Kuziel <ficorax@pm.me>"]
 maintainers-logins = ["ficorax"]
 
 [[pins]]
-cfa = { path = "../cfa" }
+cfa = {path = "../cfa"}
 
 [[depends-on]]
-cfa = "0.0.1"
+cfa = "*"

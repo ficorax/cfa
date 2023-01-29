@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -59,77 +59,84 @@ package CfA.Events is
    --  The plugins are encouraged to be able to handle note events encoded as raw midi or midi2,
    --  or implement CLAP_Plugin_Event_Filter and reject raw midi and midi2 events.
 
-   type CLAP_Events is
-     (
-      --  Note_On and Note_Off represent a key pressed and key released event, respectively.
-      --  A Note_On with a velocity of 0 is valid and should not be interpreted as a Note_Off.
-      --
-      --  Note_Choke is meant to choke the voice(s), like in a drum machine when a closed hihat
-      --  chokes an open hihat. This event can be sent by the host to the plugin. Here are two use
-      --  cases:
-      --  - a plugin is inside a drum pad in Bitwig Studio's drum machine, and this pad is choked by
-      --    another one
-      --  - the user double clicks the DAW's stop button in the transport which then stops the sound
-      --    on every tracks
-      --
-      --  Note_End is sent by the plugin to the host. The port, channel, key and note_id are those
-      --  given by the host in the Note_On event. In other words, this event is matched against the
-      --  plugin's note input port.
-      --  Note_End is useful to help the host to match the plugin's voice life time.
-      --
-      --  When using polyphonic modulations, the host has to allocate and release voices for its
-      --  polyphonic modulator. Yet only the plugin effectively knows when the host should terminate
-      --  a voice. Note_End solves that issue in a non-intrusive and cooperative way.
-      --
-      --  CLAP assumes that the host will allocate a unique voice on Note_On event for a given port,
-      --  channel and key. This voice will run until the plugin will instruct the host to terminate
-      --  it by sending a Note_End event.
-      --
-      --  Consider the following sequence:
-      --  - process()
-      --     Host->Plugin NoteOn(port:0, channel:0, key:16, time:t0)
-      --     Host->Plugin NoteOn(port:0, channel:0, key:64, time:t0)
-      --     Host->Plugin NoteOff(port:0, channel:0, key:16, t1)
-      --     Host->Plugin NoteOff(port:0, channel:0, key:64, t1)
-      --     # on t2, both notes did terminate
-      --     Host->Plugin NoteOn(port:0, channel:0, key:64, t3)
-      --     # Here the plugin finished processing all the frames and will tell the host
-      --     # to terminate the voice on key 16 but not 64, because a note has been started at t3
-      --     Plugin->Host NoteEnd(port:0, channel:0, key:16, time:ignored)
-      --
-      --  These four events use clap_event_note.
-      Note_On,
-      Note_Off,
-      Note_Choke,
-      Note_End,
+   type CLAP_Events is new UInt16_t;
 
-      --  Represents a note expression.
-      --  Uses clap_event_note_expression.
-      Note_Expression,
+   --  Note_On and Note_Off represent a key pressed and key released event, respectively.
+   --  A Note_On with a velocity of 0 is valid and should not be interpreted as a Note_Off.
+   --
+   --  Note_Choke is meant to choke the voice(s), like in a drum machine when a closed hihat
+   --  chokes an open hihat. This event can be sent by the host to the plugin. Here are two use
+   --   cases:
+   --  - a plugin is inside a drum pad in Bitwig Studio's drum machine, and this pad is choked by
+   --    another one
+   --  - the user double clicks the DAW's stop button in the transport which then stops the sound
+   --    on every tracks
+   --
+   --  Note_End is sent by the plugin to the host. The port, channel, key and note_id are those
+   --  given by the host in the Note_On event. In other words, this event is matched against the
+   --  plugin's note input port.
+   --  Note_End is useful to help the host to match the plugin's voice life time.
+   --
+   --  When using polyphonic modulations, the host has to allocate and release voices for its
+   --  polyphonic modulator. Yet only the plugin effectively knows when the host should terminate
+   --  a voice. Note_End solves that issue in a non-intrusive and cooperative way.
+   --
+   --  CLAP assumes that the host will allocate a unique voice on Note_On event for a given port,
+   --  channel and key. This voice will run until the plugin will instruct the host to terminate
+   --  it by sending a Note_End event.
+   --
+   --  Consider the following sequence:
+   --  - Process
+   --     Host->Plugin NoteOn(port:0, channel:0, key:16, time:t0)
+   --     Host->Plugin NoteOn(port:0, channel:0, key:64, time:t0)
+   --     Host->Plugin NoteOff(port:0, channel:0, key:16, t1)
+   --     Host->Plugin NoteOff(port:0, channel:0, key:64, t1)
+   --     # on t2, both notes did terminate
+   --     Host->Plugin NoteOn(port:0, channel:0, key:64, t3)
+   --     # Here the plugin finished processing all the frames and will tell the host
+   --     # to terminate the voice on key 16 but not 64, because a note has been started at t3
+   --     Plugin->Host NoteEnd(port:0, channel:0, key:16, time:ignored)
+   --
+   --  These four events use clap_event_note.
 
-      --  PARAM_VALUE sets the parameter's value; uses clap_event_param_value.
-      --  PARAM_MOD sets the parameter's modulation amount; uses clap_event_param_mod.
-      --
-      --  The value heard is: param_value + param_mod.
-      --
-      --  In case of a concurrent global value/modulation versus a polyphonic one,
-      --  the voice should only use the polyphonic one and the polyphonic modulation
-      --  amount will already include the monophonic signal.
-      Param_Value,
-      Param_Mod,
+   CLAP_Events_Note_On    : constant CLAP_Events := 0;
+   CLAP_Events_Note_Off   : constant CLAP_Events := 1;
+   CLAP_Events_Note_Choke : constant CLAP_Events := 2;
+   CLAP_Events_Note_End   : constant CLAP_Events := 3;
 
-      --  Indicates that the user started or finished adjusting a knob.
-      --  This is not mandatory to wrap parameter changes with gesture events, but this improves
-      --  the user experience a lot when recording automation or overriding automation playback.
-      --  Uses clap_event_param_gesture.
-      Param_Gesture_Begin,
-      Param_Gesture_End,
+   --  Represents a note expression.
+   --  Uses CLAP_Event_Note_Expression.
+   CLAP_Events_Note_Expression : constant CLAP_Events := 4;
 
-      Transport,  --  update the transport info; clap_event_transport
-      MIDI,       --  raw midi event; clap_event_midi
-      MIDI_SysEX, --  raw midi sysex event; clap_event_midi_sysex
-      MIDI2       --  raw midi 2 event; clap_event_midi2
-     ) with Size => 16;
+   --  Param_Value sets the parameter's value; uses CLAP_Event_Param_Value.
+   --  Param_Mod sets the parameter's modulation amount; uses CLAP_Event_Param_Mod.
+   --
+   --  The value heard is: param_value + param_mod.
+   --
+   --  In case of a concurrent global value/modulation versus a polyphonic one,
+   --  the voice should only use the polyphonic one and the polyphonic modulation
+   --  amount will already include the monophonic signal.
+   CLAP_Events_Param_Value : constant CLAP_Events := 5;
+   CLAP_Events_Param_Mod   : constant CLAP_Events := 6;
+
+   --  Indicates that the user started or finished adjusting a knob.
+   --  This is not mandatory to wrap parameter changes with gesture events, but this improves
+   --  the user experience a lot when recording automation or overriding automation playback.
+   --  Uses CLAP_Event_Param_Gesture.
+   CLAP_Events_Param_Gesture_Begin : constant CLAP_Events := 7;
+   CLAP_Events_Param_Gesture_End   : constant CLAP_Events := 8;
+
+   CLAP_Events_Transport : constant CLAP_Events := 9;
+   --  update the transport info; CLAP_Event_Transport
+
+   CLAP_Events_MIDI      : constant CLAP_Events := 10;
+   --  raw midi event; CLAP_Event_MIDI
+
+   CLAP_Events_MIDI_SysEX : constant CLAP_Events := 11;
+   --  raw midi sysex event; CLAP_Event_MIDI_SysEX
+
+   CLAP_Events_MIDI2     : constant CLAP_Events := 12;
+   --  raw midi 2 event; CLAP_Event_MIDI2
 
    --  event header
    --  must be the first attribute of the event
@@ -364,6 +371,7 @@ package CfA.Events is
    type CLAP_Event_MIDI2_Access is access CLAP_Event_MIDI2
      with Convention => C;
 
+   -------------------------------------------------------------------------------------------------
    --  Input event list, events must be sorted by time.
 
    type CLAP_Input_Events;
@@ -392,6 +400,7 @@ package CfA.Events is
       end record
      with Convention => C;
 
+   -------------------------------------------------------------------------------------------------
    --  Output event list, events must be sorted by time.
 
    type CLAP_Output_Events;

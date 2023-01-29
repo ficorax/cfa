@@ -135,7 +135,7 @@ package body Process is
    begin
       if Header.Space_ID = CLAP_Core_Event_Space_ID then
          case Header.Event_Type is
-            when Note_On =>
+            when CLAP_Events_Note_On =>
                declare
                   Event : CLAP_Event_Note
                     with Address => Header'Address, Import, Volatile;
@@ -144,7 +144,7 @@ package body Process is
                   --  TODO: handle note on
                end;
 
-            when Note_Off =>
+            when CLAP_Events_Note_Off =>
                declare
                   Event : CLAP_Event_Note
                     with Address => Header'Address, Import, Volatile;
@@ -153,7 +153,7 @@ package body Process is
                   --  TODO: handle note off
                end;
 
-            when Note_Choke =>
+            when CLAP_Events_Note_Choke =>
                declare
                   Event : CLAP_Event_Note
                     with Address => Header'Address, Import, Volatile;
@@ -162,7 +162,7 @@ package body Process is
                   --  TODO: handle note choke
                end;
 
-            when Note_End =>
+            when CLAP_Events_Note_End =>
                declare
                   Event : CLAP_Event_Note
                     with Address => Header'Address, Import, Volatile;
@@ -171,7 +171,7 @@ package body Process is
                   --  TODO: handle note end
                end;
 
-            when Note_Expression =>
+            when CLAP_Events_Note_Expression =>
                declare
                   Event : CLAP_Event_Note_Expression
                     with Address => Header'Address, Import, Volatile;
@@ -180,7 +180,7 @@ package body Process is
                   --  TODO: handle note expression
                end;
 
-            when Param_Value =>
+            when CLAP_Events_Param_Value =>
                declare
                   Event : CLAP_Event_Param_Value
                     with Address => Header'Address, Import, Volatile;
@@ -189,7 +189,7 @@ package body Process is
                   --  TODO: handle parameter change
                end;
 
-            when Param_Mod =>
+            when CLAP_Events_Param_Mod =>
                declare
                   Event : CLAP_Event_Param_Mod
                     with Address => Header'Address, Import, Volatile;
@@ -198,7 +198,7 @@ package body Process is
                   --  TODO: handle parameter modulation
                end;
 
-            when Transport =>
+            when CLAP_Events_Transport =>
                declare
                   Event : CLAP_Event_Transport
                     with Address => Header'Address, Import, Volatile;
@@ -207,7 +207,7 @@ package body Process is
                   --  TODO: handle transport event
                end;
 
-            when MIDI =>
+            when CLAP_Events_MIDI =>
                declare
                   Event : CLAP_Event_MIDI
                     with Address => Header'Address, Import, Volatile;
@@ -216,7 +216,7 @@ package body Process is
                   --  TODO: handle MIDI event
                end;
 
-            when MIDI_SysEX =>
+            when CLAP_Events_MIDI_SysEX =>
                declare
                   Event : CLAP_Event_MIDI_SysEX
                     with Address => Header'Address, Import, Volatile;
@@ -225,7 +225,7 @@ package body Process is
                   --  TODO: handle MIDI SysEx event
                end;
 
-            when MIDI2 =>
+            when CLAP_Events_MIDI2 =>
                declare
                   Event : CLAP_Event_MIDI2
                     with Address => Header'Address, Import, Volatile;

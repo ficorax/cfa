@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,11 @@
 --  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 --  SOFTWARE.
 
+----------------------------------------------------------------------------------------------------
+--  This extensions let the plugin query info about the track it's in.
+--  It is useful when the plugin is created, to initialize some parameters (mix, dry, wet)
+--  and pick a suitable configuartion regarding audio port type and channel count.
+
 with CfA.Hosts;
 with CfA.Plugins;
 with CfA.Colors;
@@ -30,28 +35,58 @@ package CfA.Extensions.Draft.Track_Infos is
    use type Interfaces.C.size_t;
 
    CLAP_Ext_Track_Info : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.track-info.draft/0");
+     := Interfaces.C.Strings.New_String ("clap.track-info.draft/1");
+
+   type CLAP_Track_Info_Flag_Index is
+     (
+      CLAP_Track_Info_Has_Track_Name,
+      CLAP_Track_Info_Has_Track_Color,
+      CLAP_Track_Info_Has_Audio_Channel,
+
+      CLAP_Track_Info_Is_For_Return_Track,
+      -- This plugin is on a return track, initialize with wet 100%
+
+      CLAP_Track_Info_Is_For_Bus,
+      -- This plugin is on a bus track, initialize with appropriate settings for bus processing
+
+      CLAP_Track_Info_Is_For_Master
+      -- This plugin is on the master, initialize with appropriate settings for channel processing
+     );
+
+   pragma Warnings (Off);
+   type CLAP_Track_Info_Flags is array (CLAP_Track_Info_Flag_Index) of Boolean
+     with Pack, Size => UInt64_t'Size;
+   pragma Warnings (On);
 
    type CLAP_Track_Info is
       record
-         ID              : CLAP_ID;
-         Index           : UInt32_t := 0;
+         Flags : CLAP_Track_Info_Flags;
+         --  Flags, see above
+
          Name            : Interfaces.C.char_array (0 .. CLAP_Name_Size - 1);
-         Path            : Interfaces.C.char_array (0 .. CLAP_Path_Size - 1);
-         --  Like "/group1/group2/drum-machine/drum-pad-13"
-         Channel_Count   : UInt32_t := 0;
-         Audio_Port_Type : Char_Ptr := Null_Ptr;
+         --  track name, available if flags contain CLAP_Track_Info_Has_Track_Name
+
          Color           : CfA.Colors.CLAP_Color;
-         Is_Return_Track : Bool := False;
+         --  track color, available if flags contain CLAP_Track_Info_Has_Track_Color
+
+         Audio_Channel_Count   : UInt32_t := 0;
+         --  availabe if flags contain CLAP_Track_Info_Has_Audio_Channel
+         --  see Extensions.Audio_Ports, type CLAP_Audio_Port_Info to learn how to use channel
+         --  count and port type
+
+         Audio_Port_Type : Char_Ptr := Null_Ptr;
       end record
      with Convention => C;
 
    type CLAP_Track_Info_Access is access all CLAP_Track_Info
      with Convention => C;
 
+   -------------------------------------------------------------------------------------------------
+
    type Changed_Function is access
      procedure (Plugin : Plugins.CLAP_Plugin_Access)
      with Convention => C;
+   --  Called when the info changes.
    --  [main-thread]
 
    type CLAP_Plugin_Track_Info is
@@ -62,6 +97,8 @@ package CfA.Extensions.Draft.Track_Infos is
 
    type CLAP_Plugin_Track_Info_Access is access CLAP_Plugin_Track_Info
      with Convention => C;
+
+   -------------------------------------------------------------------------------------------------
 
    type Get_Function is access
      function (Host : Hosts.CLAP_Host_Access;

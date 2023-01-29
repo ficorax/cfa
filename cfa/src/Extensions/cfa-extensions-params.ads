@@ -101,6 +101,41 @@
 --    - if a parameter is gone or is created with an id that may have been used
 --      before, call CLAP_Host_Params.Clear (Host, Param_ID, Clear_All)
 --    - call CLAP_Host_Params.Rescan (Rescan_All)
+--
+--  CLAP allows the plugin to change the parameter range, yet the plugin developper
+--  should be aware that doing so isn't without risk, especially if you made the
+--  promise to never change the sound. If you want to be 100% certain that the
+--  sound will not change with all host, then simply never change the range.
+--
+--  There are two approaches to automations, either you automate the plain value,
+--  or you automate the knob position. The first option will be robust to a range
+--  increase, while the second won't be.
+--
+--  If the host goes with the second approach (automating the knob position), it means
+--  that the plugin is hosted in a relaxed environment regarding sound changes (they are
+--  accepted, and not a concern as long as they are reasonable). Though, stepped parameters
+--  should be stored as plain value in the document.
+--
+--  If the host goes with the first approach, there will still be situation where the
+--  sound may innevitably change. For example, if the plugin increase the range, there
+--  is an automation playing at the max value and on top of that an LFO is applied.
+--  See the following curve:
+--                                    .
+--                                   . .
+--           .....                  .   .
+--  before: .     .     and after: .     .
+--
+--  Advices for the host:
+--  - store plain values in the document (automation)
+--  - store modulation amount in plain value delta, not in percentage
+--  - when you apply a CC mapping, remember the min/max plain values so you can adjust
+--
+--  Advice for the plugin:
+--  - think carefully about your parameter range when designing your DSP
+--  - avoid shrinking parameter ranges, they are very likely to change the sound
+--  - consider changing the parameter range as a tradeoff: what you improve vs what you break
+--  - if you plan to use adapters for other plugin formats, then you need to pay extra
+--    attention to the adapter requirements
 
 with CfA.Events;
 with CfA.Hosts;
@@ -138,14 +173,14 @@ package CfA.Extensions.Params is
       --  max: 1 -> bypass on
 
       Is_Automatable,
-   --  When set:
+      --  When set:
       --  - automation can be recorded
       --  - automation can be played back
       --
       --  The host can send live user changes for this parameter regardless of
       --  this flag.
       --
-      --  If this parameters affect the internal processing structure of
+      --  If this parameter affects the internal processing structure of
       --  the plugin, ie: max delay, fft size, ... and the plugins needs to
       --  re-allocate its working buffers, then it should call
       --  Host.Request_Restart, and perform the change once the plugin is
@@ -191,7 +226,7 @@ package CfA.Extensions.Params is
      with Convention => C, Pack, Size => 32;
    pragma Warnings (On);
 
---  This describes a parameter
+   --  This describes a parameter
    type CLAP_Param_Info is
       record
 
@@ -305,7 +340,7 @@ package CfA.Extensions.Params is
    --  This method must not be called concurrently to CLAP_Plugin.Process.
    --
    --  Note: if the plugin is processing, then the Process call will already achieve the
-   --  parameter update (bi-directionnal), so a call to flush isn't required, also be aware
+   --  parameter update (bi-directional), so a call to flush isn't required, also be aware
    --  that the plugin may use the sample offset in Process, while this information would be
    --  lost within Flush.
    --
@@ -356,7 +391,9 @@ package CfA.Extensions.Params is
       --  - some parameters were added or removed.
       --  - some parameters had critical changes:
       --    - Is_Per_Note (Flag)
+      --    - Is_Per_Key (Flag)
       --    - Is_Per_Channel (Flag)
+      --    - Is_Per_Port (Flag)
       --    - Is_Readonly (Flag)
       --    - Is_Bypass (Flag)
       --    - Is_Stepped (Flag)

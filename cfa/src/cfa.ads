@@ -42,7 +42,7 @@ package CfA is
    type UInt64_t is new Interfaces.Unsigned_64;
 
    type Bool is new Boolean
-     with Convention => C;
+     with Convention => C, Size => Interfaces.C.C_bool'Size;
 
    type UInt8_Array is array (Natural range <>) of UInt8_t
      with Convention => C;
