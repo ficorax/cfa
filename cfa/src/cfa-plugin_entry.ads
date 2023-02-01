@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -78,7 +78,7 @@ package CfA.Plugin_Entry is
      function (Factory_ID : Char_Ptr)
                return CfA.Plugin_Factory.CLAP_Plugin_Factory_Access
    with Convention => C;
-   --  Get the pointer to a factory. See plugin-factory.h for an example.
+   --  Get the pointer to a factory. See facotyr/cfa-plugin_factory.adsfactory.ads for an example.
    --
    --  Returns null if the factory is not provided.
    --  The returned pointer must *not* be freed by the caller.

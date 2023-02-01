@@ -184,20 +184,31 @@ package CfA.Events is
    type CLAP_Note_Expression_Index is
      (
       --  with 0 < x <= 4, plain = 20 * log(x)
-      Volume,
+      CLAP_Note_Expression_Volume,
 
       --  pan, 0 left, 0.5 center, 1 right
-      Pan,
+      CLAP_Note_Expression_Pan,
 
       --  relative tuning in semitone, from -120 to +120
-      Tuning,
+      CLAP_Note_Expression_Tuning,
 
       --  0..1
-      Vibrato,
-      Expression,
-      Brightness,
-      Pressure
+      CLAP_Note_Expression_Vibrato,
+      CLAP_Note_Expression_Expression,
+      CLAP_Note_Expression_Brightness,
+      CLAP_Note_Expression_Pressure
      ) with Convention => C;
+
+   for CLAP_Note_Expression_Index use
+     (
+      CLAP_Note_Expression_Volume     => 0,
+      CLAP_Note_Expression_Pan        => 1,
+      CLAP_Note_Expression_Tuning     => 2,
+      CLAP_Note_Expression_Vibrato    => 3,
+      CLAP_Note_Expression_Expression => 4,
+      CLAP_Note_Expression_Brightness => 5,
+      CLAP_Note_Expression_Pressure   => 6
+     );
 
    pragma Warnings (Off);
    type CLAP_Note_Expression is array (CLAP_Note_Expression_Index) of Bool

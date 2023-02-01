@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ with CfA.Plugins;
 package CfA.Extensions.Draft.Surround is
 
    CLAP_Ext_Surround : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.surround.draft/1");
+     := Interfaces.C.Strings.New_String ("clap.surround.draft/2");
 
    CLAP_Port_Surround : constant Char_Ptr :=
                           Interfaces.C.Strings.New_String ("surround");
@@ -84,15 +84,20 @@ package CfA.Extensions.Draft.Surround is
 
    type Get_Channel_Map_Function is access
      function (Plugin               : Plugins.CLAP_Plugin_Access;
+               Config_ID            : CLAP_ID;
                Is_Input             : Bool;
                Port_Index           : UInt32_t;
                Channel_Map          : out CLAP_Channel_Map;
                Channel_Map_Capacity : UInt32_t)
                return UInt32_t
      with Convention => C;
-   --  Stores into the channel_map array, the surround identifer of each
+   --  Stores into the Channel_Map array, the surround identifer of each
    --  channels.
-   --  Returns the number of elements stored in channel_map
+   --  Returns the number of elements stored in Channel_Map
+   --
+   --  Config_ID: the configuration id, see CLAP_Plugin_Audio_Ports_Config.
+   --  If Config_ID is CLAP_Invalid_ID, then this function queries the current port info.
+   --
    --  [main-thread]
 
    type Changed_Function_Plugin is access

@@ -50,7 +50,7 @@ with CfA.Plugins;
 package CfA.Extensions.Draft.Audio_Ports_Activation is
 
    CLAP_Ext_Audio_Ports_Activation : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.audio-ports-activation/draft-0");
+     := Interfaces.C.Strings.New_String ("clap.audio-ports-activation/draft-1");
 
    type Can_Activate_While_Processing_Funcion is access
      function (Plugin : Plugins.CLAP_Plugin_Access)
@@ -60,10 +60,11 @@ package CfA.Extensions.Draft.Audio_Ports_Activation is
    --  [main-thread]
 
    type Set_Active_Function is access
-     procedure (Plugin     : Plugins.CLAP_Plugin_Access;
-                Is_Input   : Bool;
-                Port_Index : UInt32_t;
-                Is_Active  : Bool)
+     function (Plugin     : Plugins.CLAP_Plugin_Access;
+               Is_Input   : Bool;
+               Port_Index : UInt32_t;
+               Is_Active  : Bool)
+               return Bool
      with Convention => C;
    --  Activate the given port.
    --

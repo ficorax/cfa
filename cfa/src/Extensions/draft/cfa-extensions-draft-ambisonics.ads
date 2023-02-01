@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ with CfA.Plugins;
 package CfA.Extensions.Draft.Ambisonics is
 
    CLAP_Ext_Ambisonic : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.ambisonic.draft/0");
+     := Interfaces.C.Strings.New_String ("clap.ambisonic.draft/1");
 
    CLAP_Port_Ambisonic : constant Char_Ptr :=
                            Interfaces.C.Strings.New_String ("ambisonic");
@@ -66,12 +66,16 @@ package CfA.Extensions.Draft.Ambisonics is
 
    type Get_Info_Function is access
      function (Plugin     : Plugins.CLAP_Plugin_Access;
+               Config_ID  : CLAP_ID;
                Is_Input   : Bool;
                Port_Index : UInt32_t;
                Info       : CLAP_Ambisonic_Info_Access)
                return Bool
      with Convention => C;
    --  Returns true on success
+   --
+   --  Config_ID: the configuration id, see CLAP_Plugin_Audio_Ports_Config.
+   --  If Config_ID is CLAP_Invalid_ID, then this function queries the current port info.
    --  [main-thread]
 
    type CLAP_Plugin_Ambisonic is

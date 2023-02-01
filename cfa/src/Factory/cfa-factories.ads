@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -21,23 +21,6 @@
 --  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 --  SOFTWARE.
 
-package CfA.Version is
+package CfA.Factories is
 
-   type CLAP_Version is
-      record
-         --  This is the major ABI and API design
-         --  Version 0.X.Y Correspond To The Development Stage, API and ABI Are not Stable
-         --  Version 1.X.Y correspont to the release stage, API and ABI are stable
-
-         Major    : UInt32_t := 1;
-         Minor    : UInt32_t := 1;
-         Revision : UInt32_t := 7;
-      end record
-   with Convention => C;
-
-   function CLAP_Version_Is_Compatible (V : CLAP_Version) return Bool is
-     (Bool (V.Major >= 1));
-
-   CLAP_Version_Init : constant CLAP_Version := (others => <>);
-
-end CfA.Version;
+end CfA.Factories;

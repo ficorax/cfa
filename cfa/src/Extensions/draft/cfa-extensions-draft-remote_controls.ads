@@ -58,16 +58,20 @@ package CfA.Extensions.Draft.Remote_Controls is
    use type Interfaces.C.size_t;
 
    CLAP_Ext_Remote_Controls : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.remote-controls.draft/1");
+     := Interfaces.C.Strings.New_String ("clap.remote-controls.draft/2");
 
    CLAP_Remote_Controls_Count : constant Interfaces.C.size_t := 8;
 
    type CLAP_Remote_Controls_Page is
       record
-         Section_Name : Interfaces.C.char_array (0 .. CLAP_Name_Size - 1);
-         Page_ID      : CLAP_ID;
-         Page_Name    : Interfaces.C.char_array (0 .. CLAP_Name_Size - 1);
-         Param_IDs    : CLAP_ID_Array (0 .. CLAP_Remote_Controls_Count - 1);
+         Section_Name  : Interfaces.C.char_array (0 .. CLAP_Name_Size - 1);
+         Page_ID       : CLAP_ID;
+         Page_Name     : Interfaces.C.char_array (0 .. CLAP_Name_Size - 1);
+         Param_IDs     : CLAP_ID_Array (0 .. CLAP_Remote_Controls_Count - 1);
+
+         Is_For_Preset : Bool;
+         --  This is used to separate device pages versus preset pages.
+         --  If True, then this page is specific to this preset.
       end record
      with Convention => C;
 

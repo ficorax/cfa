@@ -35,17 +35,20 @@ package CfA.Plugin_Features is
    -------------------
    --  Plugin category
 
-   CLAP_Plugin_Feature_Instrument   : constant String := "instrument";
+   CLAP_Plugin_Feature_Instrument    : constant String := "instrument";
    --  Add this feature if your plugin can process note events and then produce audio
 
+   CLAP_Plugin_Feature_Audio_Effect  : constant String := "audio-effect";
    --  Add this feature if your plugin is an audio effect
-   CLAP_Plugin_Feature_Audio_Effect : constant String := "audio-effect";
 
+   CLAP_Plugin_Feature_Note_Effect   : constant String := "note-effect";
    --  Add this feature if your plugin is a note effect or a note generator/sequencer
-   CLAP_Plugin_Feature_Note_Effect  : constant String := "note-effect";
 
+   CLAP_Plugin_Feature_Note_Detector : constant String := "note-detector";
+   --  Add this feature if your plugin converts audio to notes
+
+   CLAP_Plugin_Feature_Analyzer      : constant String := "analyzer";
    --  Add this feature if your plugin is an analyzer
-   CLAP_Plugin_Feature_Analyzer     : constant String := "analyzer";
 
    -----------------------
    --  Plugin sub-category

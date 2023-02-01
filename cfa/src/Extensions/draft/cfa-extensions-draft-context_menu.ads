@@ -76,9 +76,13 @@ package CfA.Extensions.Draft.Context_Menu is
       --  Starts a sub menu with the given label.
       --  data: CLAP_Context_Menu_Submenu_Access
 
-      CLAP_Context_Menu_Item_End_Submenu
+      CLAP_Context_Menu_Item_End_Submenu,
       --  Ends the current sub menu.
       --  data: null
+
+      CLAP_Context_Menu_Item_Title
+      --  Adds a title entry
+      --  data: CLAP_Context_Menu_Item_Title_Access
      ) with Convention => C, Size => 32;
 
    type CLAP_Context_Menu_Entry is
@@ -105,6 +109,16 @@ package CfA.Extensions.Draft.Context_Menu is
          --  if True, then the menu entry will be displayed as checked
 
          Action_ID  : CLAP_ID;
+      end record
+     with Convention => C;
+
+   type CLAP_Context_Menu_Title is
+      record
+         Title      : Interfaces.C.Strings.chars_ptr;
+         --  text to be displayed
+
+         Is_Enabled : Bool;
+         --  if False, then the menu entry is greyed out
       end record
      with Convention => C;
 

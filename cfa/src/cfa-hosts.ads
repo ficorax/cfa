@@ -34,6 +34,7 @@ package CfA.Hosts is
                return System.Address
    with Convention => C;
    --  Query an extension.
+   --  The returned pointer is owned by the host.
    --  It is forbidden to call it before Plugin.Init.
    --  You can call it within Plugin.Init call, and after.
     --  [thread-safe]

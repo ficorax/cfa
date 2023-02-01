@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -42,9 +42,14 @@
 --  Plugins with very complex configuration possibilities should let the user
 --  configure the ports from the plugin GUI, and call
 --  CLAP_Host_Audio_Ports.Rescan (CLAP_Audio_Ports_Rescan_All).
+--
+--  To inquire the exact bus layout, the plugin implements the CLAP_Plugin_Audio_Ports_Config_Info
+--  extension where all busses can be retrieved in the same way as in the audio-port extension.
 
 with CfA.Hosts;
 with CfA.Plugins;
+
+with CfA.Extensions.Audio_Ports;
 
 package CfA.Extensions.Audio_Ports_Config is
 
@@ -53,6 +58,9 @@ package CfA.Extensions.Audio_Ports_Config is
 
    CLAP_Ext_Audio_Ports_Config : constant Char_Ptr :=
                                    New_String ("clap.audio-ports-config");
+
+   CLAP_Ext_Audio_Ports_Config_Info : constant Char_Ptr :=
+                                   New_String ("clap.audio-ports-config_info/draft-0");
 
    --  Minimalistic description of ports configuration
    type CLAP_Audio_Ports_Config is
@@ -77,6 +85,8 @@ package CfA.Extensions.Audio_Ports_Config is
 
    type CLAP_Audio_Ports_Config_Access is access CLAP_Audio_Ports_Config
      with Convention => C;
+
+   -------------------------------------------------------------------------------------------------
 
    --  The audio ports config scan has to be done while the plugin is
    --  deactivated.
@@ -108,8 +118,8 @@ package CfA.Extensions.Audio_Ports_Config is
 
    type CLAP_Plugin_Audio_Ports_Config is
       record
-         Count         : Count_Function := null;
-         Get           : Get_Function := null;
+         Count         : Count_Function         := null;
+         Get           : Get_Function           := null;
          Select_Config : Select_Config_Function := null;
       end record
      with Convention => C;
@@ -117,6 +127,38 @@ package CfA.Extensions.Audio_Ports_Config is
    type CLAP_Plugin_Audio_Ports_Config_Access is
      access CLAP_Plugin_Audio_Ports_Config
        with Convention => C;
+
+   -------------------------------------------------------------------------------------------------
+
+   type Current_Config_Function is access
+     function (Plugin : Plugins.CLAP_Plugin_Access)
+               return CLAP_ID
+     with Convention => C;
+   --  Gets the id of the currently selected config, or CLAP_Invalid_ID if the current port
+   --  layout isn't part of the config list.
+   --
+   --  [main-thread]
+
+   type Get_Info_Function is access
+     function (Plugin     : Plugins.CLAP_Plugin_Access;
+               Config_ID  : CLAP_ID;
+               Port_Index : UInt32_t;
+               Is_Input   : Bool;
+               Info       : out Extensions.Audio_Ports.CLAP_Audio_Port_Info)
+               return Bool
+     with Convention => C;
+   --  Get info about about an audio port, for a given config_id.
+   --  This is analogous to CLAP_Plugin_Audio_Ports.Get.
+   --  [main-thread]
+
+   type CLAP_Plugin_Audio_Ports_Config_Info is
+      record
+         Current_Config : Current_Config_Function;
+         Get            : Get_Info_Function;
+      end record
+     with Convention => C;
+
+   -------------------------------------------------------------------------------------------------
 
    type Rescan_Function is access
      procedure (Host : Hosts.CLAP_Host_Access)

@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2023 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,11 @@
 --  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 --  SOFTWARE.
 
-package CfA.Plugin_Invalidation is
+----------------------------------------------------------------------------------------------------
+--  Use it to retrieve CLAP_Plugin_Invalidation_Factory from
+--  CLAP_Plugin_Entry.Get_Factory
+
+package CfA.Factories.Draft.Plugin_Invalidation is
 
    type CLAP_Plugin_Invalidation_Source is
       record
@@ -73,10 +77,10 @@ package CfA.Plugin_Invalidation is
 
    type CLAP_Plugin_Invalidation_Factory is
       record
-         Count : Count_Function := null;
-         Get : Get_Function := null;
+         Count   : Count_Function   := null;
+         Get     : Get_Function     := null;
          Refresh : Refresh_Function := null;
       end record
      with Convention => C;
 
-end CfA.Plugin_Invalidation;
+end CfA.Factories.Draft.Plugin_Invalidation;
