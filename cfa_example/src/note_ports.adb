@@ -43,11 +43,11 @@ package body Note_Ports is
       Info.Name (Info.Name'First .. Info.Name'First + Port_Name'Length - 1)
         := Port_Name;
 
-      Info.Supported_Dialects (CLAP) := True;
-      Info.Supported_Dialects (MIDI_MPE) := True;
-      Info.Supported_Dialects (MIDI2) := True;
+      Info.Supported_Dialects (CLAP_Note_Dialect_CLAP) := True;
+      Info.Supported_Dialects (CLAP_Note_Dialect_MIDI_MPE) := True;
+      Info.Supported_Dialects (CLAP_Note_Dialect_MIDI2) := True;
 
-      Info.Preferred_Dialect (CLAP) := True;
+      Info.Preferred_Dialect (CLAP_Note_Dialect_CLAP) := True;
 
       return Bool'(True);
    end Example_Note_Ports_Get;

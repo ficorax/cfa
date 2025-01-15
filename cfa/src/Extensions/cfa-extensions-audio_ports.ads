@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -43,25 +43,25 @@ package CfA.Extensions.Audio_Ports is
    use Interfaces.C;
    use Interfaces.C.Strings;
 
-   CLAP_Ext_Audio_Ports : constant Char_Ptr := New_String ("clap.audio-ports");
-   CLAP_Port_Mono       : constant Char_Ptr := New_String ("mono");
-   CLAP_Port_Stereo     : constant Char_Ptr := New_String ("stereo");
+   CLAP_Ext_Audio_Ports : constant Chars_Ptr := New_String ("clap.audio-ports");
+   CLAP_Port_Mono       : constant Chars_Ptr := New_String ("mono");
+   CLAP_Port_Stereo     : constant Chars_Ptr := New_String ("stereo");
 
    type Audio_Port_Type_Index is
      (
 
-      Is_Main,
+      CLAP_Audio_Port_Is_Main,
       --  This port is the main audio input or output.
       --  There can be only one main input and main output.
       --  Main port must be at index 0.
 
-      Supports_64bits,
+      CLAP_Audio_Port_Supports_64bits,
       --  This port can be used with 64 bits audio
 
       Prefers_64bits,
       --  64 bits audio is preferred with this port
 
-      Requires_Common_Sample_Size
+      CLAP_Audio_Port_Requires_Common_Sample_Size
       --  This port must be used with the same sample size as all the other
       --  ports which have this flag. In other words if all ports have this flag
       --  then the plugin may either be used entirely with 64 bits audio or
@@ -75,24 +75,23 @@ package CfA.Extensions.Audio_Ports is
 
    type CLAP_Audio_Port_Info is
       record
-         ID : CLAP_ID;
+         ID            : CLAP_ID;
          --  id identifies a port and must be stable.
          --  id may overlap between input and output ports.
 
-         Name : char_array (0 .. CLAP_Name_Size - 1); --  displayable name
+         Name          : char_array (0 .. CLAP_Name_Size - 1); --  displayable name
 
-         Flags : CLAP_Audio_Port_Type := (others => False);
+         Flags         : CLAP_Audio_Port_Type := (others => False);
 
-         Channel_Count : UInt32_t := 0;
+         Channel_Count : UInt32_t             := 0;
 
-         Port_Type : Char_Ptr := Null_Ptr;
+         Port_Type     : Chars_Ptr             := Null_Ptr;
          --  If null or empty then it is unspecified (arbitrary audio).
          --  This filed can be compared against:
          --  - CLAP_Port_Mono
          --  - CLAP_Port_Stereo
          --  - CLAP_Port_Surround (defined in the surround extension)
          --  - CLAP_Port_Ambisonic (defined in the ambisonic extension)
-         --  - CLAP_Port_CV (defined in the cv extension)
          --
          --  An extension can provide its own port type and way to inspect
          --  the channels.
@@ -112,7 +111,7 @@ package CfA.Extensions.Audio_Ports is
                Is_Input : Bool)
                return UInt32_t
      with Convention => C;
-   --  number of ports, for either input or output
+   --  Number of ports, for either input or output
    --  [main-thread]
 
    type Get_Function is access
@@ -122,14 +121,15 @@ package CfA.Extensions.Audio_Ports is
                Info     : CLAP_Audio_Port_Info_Access)
                return Bool
      with Convention => C;
-   --  get info about about an audio port.
+   --  Get info about an audio port.
+   --  Returns true on success and stores the result into info.
    --  [main-thread]
 
    --  The audio ports scan has to be done while the plugin is deactivated.
    type CLAP_Plugin_Audio_Ports is
       record
          Count : Count_Function := null;
-         Get   : Get_Function := null;
+         Get   : Get_Function   := null;
       end record
      with Convention => C;
 
@@ -138,29 +138,28 @@ package CfA.Extensions.Audio_Ports is
 
    type Audio_Port_Rescan_Index is
      (
-      Names,
+      CLAP_Audio_Ports_Rescan_Names,
       --  The ports name did change, the host can scan them right away.
 
-      Flags,
+      CLAP_Audio_Ports_Rescan_Flags,
       --  [!active] The flags did change
 
-      Channel_Count,
+      CLAP_Audio_Ports_Rescan_Channel_Count,
       --  [!active] The channel_count did change
 
-      Port_Type,
+      CLAP_Audio_Ports_Rescan_Port_Type,
       --  [!active] The port type did change
 
-      In_Place_Pair,
+      CLAP_Audio_Ports_Rescan_In_Place_Pair,
       --  [!active] The in-place pair did change, this requires.
 
-      List
+      CLAP_Audio_Ports_Rescan_List
       --  [!active] The list of ports have changed: entries have been
       --  removed/added.
      ) with Convention => C;
 
    pragma Warnings (Off);
-   type CLAP_Audio_Port_Rescan_Flags is
-     array (Audio_Port_Rescan_Index) of Bool
+   type CLAP_Audio_Port_Rescan_Flags is array (Audio_Port_Rescan_Index) of Bool
      with Pack, Size => 32;
    pragma Warnings (On);
 
@@ -180,17 +179,16 @@ package CfA.Extensions.Audio_Ports is
      procedure (Host : Hosts.CLAP_Host_Access;
                 Flag : CLAP_Audio_Port_Rescan_Flags)
      with Convention => C;
-
-   type CLAP_Host_Audio_Ports is
-      record
-         Is_Rescan_Flag_Supported : Is_Rescan_Flag_Supported_Funcion := null;
-
-         Rescan : Rescan_Function := null;
    --  Rescan the full list of audio ports according to the flags.
    --  It is illegal to ask the host to rescan with a flag that is not
    --  supported.
    --  Certain flags require the plugin to be de-activated.
    --  [main-thread]
+
+   type CLAP_Host_Audio_Ports is
+      record
+         Is_Rescan_Flag_Supported : Is_Rescan_Flag_Supported_Funcion := null;
+         Rescan                   : Rescan_Function                  := null;
       end record
      with Convention => C;
 

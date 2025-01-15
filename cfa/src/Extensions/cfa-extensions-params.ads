@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -125,15 +125,19 @@
 --           .....                  .   .
 --  before: .     .     and after: .     .
 --
---  Advice for the host:
 --  - store plain values in the document (automation)
 --  - store modulation amount in plain value delta, not in percentage
 --  - when you apply a CC mapping, remember the min/max plain values so you can adjust
+--  - do not implement a parameter saving fall back for plugins that don't
+--    implement the state extension
 --
 --  Advice for the plugin:
+--
 --  - think carefully about your parameter range when designing your DSP
 --  - avoid shrinking parameter ranges, they are very likely to change the sound
 --  - consider changing the parameter range as a tradeoff: what you improve vs what you break
+--  - make sure to implement saving and loading the parameter values using the
+--    state extension
 --  - if you plan to use adapters for other plugin formats, then you need to pay extra
 --    attention to the adapter requirements
 
@@ -145,34 +149,34 @@ package CfA.Extensions.Params is
 
    use Interfaces.C;
 
-   CLAP_Ext_Params : constant Char_Ptr :=
+   CLAP_Ext_Params : constant Chars_Ptr :=
                        Interfaces.C.Strings.New_String ("clap.params");
 
    type Param_Info_Flags_Index is
      (
-      Is_Stepped,
+      CLAP_Param_Is_Stepped,
       --  Is this param stepped? (integer values only)
       --  if so the double value is converted to integer using a cast (equivalent
       --  to trunc).
 
-      Is_Periodic,
+      CLAP_Param_Is_Periodic,
       --  Useful for for periodic parameters like a phase
 
-      Is_Hidden,
+      CLAP_Param_Is_Hidden,
       --  The parameter should not be shown to the user, because it is currently
       --  not used.
       --  It is not necessary to process automation for this parameter.
 
-      Is_Readonly,
+      CLAP_Param_Is_Readonly,
       --  The parameter can't be changed by the host.
 
-      Is_Bypass,
+      CLAP_Param_Is_Bypass,
       --  This parameter is used to merge the plugin and host bypass button.
       --  It implies that the parameter is stepped.
       --  min: 0 -> bypass off
       --  max: 1 -> bypass on
 
-      Is_Automatable,
+      CLAP_Param_Is_Automatable,
       --  When set:
       --  - automation can be recorded
       --  - automation can be played back
@@ -186,39 +190,44 @@ package CfA.Extensions.Params is
       --  Host.Request_Restart, and perform the change once the plugin is
       --  re-activated.
 
-      Is_Automatable_Per_Note_ID,
+      CLAP_Param_Is_Automatable_Per_Note_ID,
       --  Does this parameter support per note automations?
 
-      Is_Automatable_Per_Key,
+      CLAP_Param_Is_Automatable_Per_Key,
       --  Does this parameter support per key automations?
 
-      Is_Automatable_Per_Channel,
+      CLAP_Param_Is_Automatable_Per_Channel,
       --  Does this parameter support per channel automations?
 
-      Is_Automatable_Per_Port,
+      CLAP_Param_Is_Automatable_Per_Port,
       --  Does this parameter support per port automations?
 
-      Is_Modulatable,
+      CLAP_Param_Is_Modulatable,
       --  Does this parameter support the modulation signal?
 
-      Is_Modulatable_Per_Note_ID,
+      CLAP_Param_Is_Modulatable_Per_Note_ID,
       --  Does this parameter support per note automations?
 
-      Is_Modulatable_Per_Key,
+      CLAP_Param_Is_Modulatable_Per_Key,
       --  Does this parameter support per key automations?
 
-      Is_Modulatable_Per_Channel,
+      CLAP_Param_Is_Modulatable_Per_Channel,
       --  Does this parameter support per channel automations?
 
-      Is_Modulatable_Per_Port,
+      CLAP_Param_Is_Modulatable_Per_Port,
       --  Does this parameter support per port automations?
 
-      Requires_Process
+      CLAP_Param_Requires_Process,
       --  Any change to this parameter will affect the plugin output and
       --  requires to be done via Process if the plugin is active.
       --
       --  A simple example would be a DC Offset, changing it will change
       --  the output signal and must be processed.
+
+      CLAP_Param_Is_Enum
+      --  This parameter represents an enumerated value.
+      --  If you set this flag, then you must set CLAP_PARAM_IS_STEPPED too.
+      --  All values from min to max must not have a blank value_to_text().
      ) with Convention => C;
 
    pragma Warnings (Off);
@@ -237,7 +246,7 @@ package CfA.Extensions.Params is
 
          Flags : CLAP_Param_Info_Flags := (others => False);
 
-         Cookie : Void_Ptr := System.Null_Address;
+         Cookie : Void_Ptr := Null_Void_Ptr;
          --  This value is optional and set by the plugin.
          --  Its purpose is to provide a fast access to the
          --  plugin parameter object by caching its pointer.
@@ -316,7 +325,7 @@ package CfA.Extensions.Params is
      function (Plugin              : Plugins.CLAP_Plugin_Access;
                Param_ID            : CLAP_ID;
                Value               : CLAP_Double;
-               Out_Buffer          : Char_Ptr;
+               Out_Buffer          : Chars_Ptr;
                Out_Buffer_Capacity : UInt32_t)
                return Bool
      with Convention => C;
@@ -327,7 +336,7 @@ package CfA.Extensions.Params is
    type Text_To_Value_Function is access
      function (Plugin           :     Plugins.CLAP_Plugin_Access;
                Param_ID         :     CLAP_ID;
-               Param_Value_Text :     Char_Ptr;
+               Param_Value_Text :     Chars_Ptr;
                Out_Value        : out CLAP_Double)
                return Bool
      with Convention => C;
@@ -366,17 +375,17 @@ package CfA.Extensions.Params is
 
    type Param_Rescan_Flags_Index is
      (
-      Values,
+      CLAP_Param_Rescan_Values,
       --  The parameter values did change, eg. after loading a preset.
       --  The host will scan all the parameters value.
       --  The host will not record those changes as automation points.
       --  New values takes effect immediately.
 
-      Text,
+      CLAP_Param_Rescan_Text,
       --  The value to text conversion changed, and the text needs to be
       --  rendered again.
 
-      Info,
+      CLAP_Param_Rescan_Info,
       --  The parameter info did change, use this flag for:
       --  - name change
       --  - module change
@@ -384,7 +393,7 @@ package CfA.Extensions.Params is
       --  - Is_Hidden (Flag)
       --  New info takes effect immediately.
 
-      Rescan_All
+      CLAP_Param_Rescan_Rescan_All
       --  Invalidates everything the host knows about parameters.
       --  It can only be used while the plugin is deactivated.
       --  If the plugin is activated use CLAP_Host.Restart and delay any change
@@ -414,13 +423,13 @@ package CfA.Extensions.Params is
 
    type Param_Clear_Flags_Index is
      (
-      Clear_All,
+      CLAP_Param_Clear_All,
       --  Clears all possible references to a parameter
 
-      Automations,
+      CLAP_Param_Clear_Automations,
       --  Clears all automations to a parameter
 
-      Modulations
+      CLAP_Param_Clear_Modulations
       --  Clears all modulations to a parameter
      ) with Convention => C;
 

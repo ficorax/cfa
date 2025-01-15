@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.POSIX_Fd_Support is
 
-   CLAP_Ext_Posix_Fd_Support : constant Char_Ptr
+   CLAP_Ext_Posix_Fd_Support : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.posix-fd-support");
 
    --  IO events flags, they can be used to form a mask which describes:
@@ -39,9 +39,9 @@ package CfA.Extensions.POSIX_Fd_Support is
    --  - which events happened (on_fd)
    type Posix_Fd_Flags_Index is
      (
-      Read,
-      Write,
-      Error
+      CLAP_POSIX_FD_Read,
+      CLAP_POSIX_FD_Write,
+      CLAP_POSIX_FD_Error
      ) with Convention => C;
 
    pragma Warnings (Off);

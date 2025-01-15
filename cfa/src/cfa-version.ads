@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +30,8 @@ package CfA.Version is
          --  Version 1.X.Y correspont to the release stage, API and ABI are stable
 
          Major    : UInt32_t := 1;
-         Minor    : UInt32_t := 1;
-         Revision : UInt32_t := 7;
+         Minor    : UInt32_t := 2;
+         Revision : UInt32_t := 2;
       end record
    with Convention => C;
 

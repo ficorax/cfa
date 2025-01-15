@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -28,64 +28,80 @@
 with CfA.Hosts;
 with CfA.Plugins;
 
-package CfA.Extensions.Draft.Ambisonics is
+package CfA.Extensions.Ambisonics is
 
-   CLAP_Ext_Ambisonic : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.ambisonic.draft/1");
+   CLAP_Ext_Ambisonic : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.ambisonic/3");
+   --  This extension can be used to specify the channel mapping used by the plugin.
 
-   CLAP_Port_Ambisonic : constant Char_Ptr :=
+   CLAP_Ext_Ambisonic_Compat : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.ambisonic.draft/3");
+   --  The latest draft is 100% compatible.
+   --  This compat ID may be removed in 2026.
+
+   CLAP_Port_Ambisonic : constant Chars_Ptr :=
                            Interfaces.C.Strings.New_String ("ambisonic");
 
    type CLAP_Ambisonic_Channel_Ordering is
    (
-    FuMa,
+    CLAP_Ambisonic_Ordering_FuMa,
     --  FuMa channel ordering
 
-    ACN
+    CLAP_Ambisonic_Ordering_ACN
    --  ACN channel ordering
    ) with Convention => C, Size => 32;
 
    type CLAP_Ambisonic_Normalization is
      (
-      MaxN,
-      SN3D,
-      N3D,
-      SN2D,
-      N2D
+      CLAP_Ambisonic_Normalization_MaxN,
+      CLAP_Ambisonic_Normalization_SN3D,
+      CLAP_Ambisonic_Normalization_N3D,
+      CLAP_Ambisonic_Normalization_SN2D,
+      CLAP_Ambisonic_Normalization_N2D
      ) with Convention => C, Size => 32;
 
-   type CLAP_Ambisonic_Info is
+   type CLAP_Ambisonic_Config is
       record
          Ordering      : CLAP_Ambisonic_Channel_Ordering;
          Normalization : CLAP_Ambisonic_Normalization;
       end record
      with Convention => C;
 
-   type CLAP_Ambisonic_Info_Access is access CLAP_Ambisonic_Info
+   type CLAP_Ambisonic_Config_Access is access CLAP_Ambisonic_Config
      with Convention => C;
 
-   type Get_Info_Function is access
+   -----------------------------------------------------------------------------
+
+   type Is_Config_Supported_Function is access
+     function (Plugin : Plugins.CLAP_Plugin_Access;
+               Config : CLAP_Ambisonic_Config_Access) return Bool
+     with Convention => C;
+   --  Returns true if the given configuration is supported.
+   --  [main-thread]
+
+   type Get_Config_Function is access
      function (Plugin     : Plugins.CLAP_Plugin_Access;
-               Config_ID  : CLAP_ID;
                Is_Input   : Bool;
                Port_Index : UInt32_t;
-               Info       : CLAP_Ambisonic_Info_Access)
-               return Bool
+               Config     : CLAP_Ambisonic_Config_Access) return Bool
      with Convention => C;
    --  Returns true on success
    --
-   --  Config_ID: the configuration id, see CLAP_Plugin_Audio_Ports_Config.
-   --  If Config_ID is CLAP_Invalid_ID, then this function queries the current port info.
+   --  Config_Id: the configuration id, see Clap_Plugin_Audio_Ports_Config.
+   --  If config_id is Clap_Invalid_ID, then this function queries the current port info.
    --  [main-thread]
 
    type CLAP_Plugin_Ambisonic is
       record
-         Get_Info : Get_Info_Function := null;
+         Is_Config_Supported : Is_Config_Supported_Function := null;
+         Get_Config          : Get_Config_Function := null;
       end record
      with Convention => C;
 
    type CLAP_Plugin_Ambisonic_Access is access CLAP_Plugin_Ambisonic
      with Convention => C;
+
+   -----------------------------------------------------------------------------
 
    type Changed_Function is access
      procedure (Host : Hosts.CLAP_Host_Access)
@@ -103,4 +119,4 @@ package CfA.Extensions.Draft.Ambisonics is
    type CLAP_Host_Ambisonic_Access is access CLAP_Host_Ambisonic
      with Convention => C;
 
-end CfA.Extensions.Draft.Ambisonics;
+end CfA.Extensions.Ambisonics;

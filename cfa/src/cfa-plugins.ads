@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -45,28 +45,28 @@ package CfA.Plugins is
          --    version strings, so here is a regex like expression which is likely to be
          --    understood by most hosts: MAJOR(.MINOR(.REVISION)?)?( (Alpha|Beta) XREV)?
 
-         ID          : Char_Ptr := Null_Ptr;
+         ID          : Chars_Ptr := Null_Ptr;
          --  eg: "com.u-he.diva", mandatory
 
-         Name        : Char_Ptr := Null_Ptr;
+         Name        : Chars_Ptr := Null_Ptr;
          --  eg: "Diva", mandatory
 
-         Vendor      : Char_Ptr := Null_Ptr;
+         Vendor      : Chars_Ptr := Null_Ptr;
          --  eg: "u-he"
 
-         URL         : Char_Ptr := Null_Ptr;
+         URL         : Chars_Ptr := Null_Ptr;
          --  eg: "https://u-he.com/products/diva/"
 
-         Manual_URL  : Char_Ptr := Null_Ptr;
+         Manual_URL  : Chars_Ptr := Null_Ptr;
          --  eg: "https://dl.u-he.com/manuals/plugins/diva/Diva-user-guide.pdf"
 
-         Support_URL : Char_Ptr := Null_Ptr;
+         Support_URL : Chars_Ptr := Null_Ptr;
          --  eg: "https://u-he.com/support/"
 
-         Version_Str : Char_Ptr := Null_Ptr;
+         Version_Str : Chars_Ptr := Null_Ptr;
          --  eg: "1.4.4"
 
-         Description : Char_Ptr := Null_Ptr;
+         Description : Chars_Ptr := Null_Ptr;
          --  eg: "The spirit of analogue"
 
          --  Arbitrary list of keywords.
@@ -92,7 +92,10 @@ package CfA.Plugins is
    --  Must be called after creating the plugin.
    --  If init returns false, the host must destroy the plugin instance.
    --  If init returns true, then the plugin is initialized and in the deactivated state.
-   --  [main-thread]
+   --  Unlike in `plugin-factory::create_plugin`, in init you have complete access to the host
+   --  and host extensions, so clap related setup activities should be done here rather than in
+   --  create_plugin.
+   --  // [main-thread]
 
    type Destroy_Function is access
      procedure (P : CLAP_Plugin_Access)
@@ -108,15 +111,13 @@ package CfA.Plugins is
                Max_Frames_Count : UInt32_t)
                return Bool
      with Convention => C;
-   --  Activate the plugin.
-   --  In this call the plugin may allocate memory and prepare everything needed
-   --  for the process call. The process's sample rate will be constant and
-   --  process's frame count will included in the [min, max] range, which is
-   --  bounded by [1, INT32_MAX].
-   --  Once activated the latency and port configuration must remain constant,
-   --  until deactivation.
-   --
-   --  [main-thread & !active_state]
+   --  Activate and deactivate the plugin.
+   --  In this call the plugin may allocate memory and prepare everything needed for the process
+   --  call. The process's sample rate will be constant and process's frame count will included in
+   --  the [min, max] range, which is bounded by [1, INT32_MAX].
+   --  Once activated the latency and port configuration must remain constant, until deactivation.
+   --  Returns true on success.
+   --  [main-thread & !active]
 
    type Deactivate_Function is access
      procedure (P : CLAP_Plugin_Access)
@@ -129,7 +130,8 @@ package CfA.Plugins is
      function (P : CLAP_Plugin_Access) return Bool
      with Convention => C;
    --  Call start processing before processing.
-   --  [audio-thread & active_state & !processing_state]
+   --  Returns true on success.
+   --  [audio-thread & active & !processing]
 
    type Stop_Processing_Function is access
      procedure (P : CLAP_Plugin_Access)
@@ -143,7 +145,7 @@ package CfA.Plugins is
    --  - Clears all buffers, performs a full reset of the processing state
    --    (filters, oscillators, enveloppes, lfo, ...) and kills all voices.
    --  - The parameter's value remain unchanged.
-   --  - clap_process.steady_time may jump backward.
+   --  - Clap_Process.Steady_Time may jump backward.
    --
    --  [audio-thread & active_state]
 
@@ -159,7 +161,7 @@ package CfA.Plugins is
 
    type Get_Extension_Function is access
      function (P  : CLAP_Plugin_Access;
-               ID : Char_Ptr)
+               ID : Chars_Ptr)
                return System.Address
      with Convention => C;
    --  Query an extension.
@@ -172,13 +174,14 @@ package CfA.Plugins is
      procedure (P : CLAP_Plugin_Access)
      with Convention => C;
    --  Called by the host on the main thread in response to a previous call to:
-   --    host->request_callback(host);
+   --    Host.Request_Callback (Host);
    --  [main-thread]
 
    type CLAP_Plugin is
       record
          Descriptor       : CLAP_Plugin_Descriptor_Access;
-         Plugin_Data      : Void_Ptr; -- reserved pointer for the plugin
+         Plugin_Data      : Void_Ptr := Null_Void_Ptr; -- reserved pointer for the plugin
+
          Init             : Init_Function;
          Destroy          : Destroy_Function;
          Activate         : Activate_Function;

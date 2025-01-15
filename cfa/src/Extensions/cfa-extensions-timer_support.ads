@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Timer_Support is
 
-   CLAP_Ext_Timer_Support : constant Char_Ptr
+   CLAP_Ext_Timer_Support : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.timer-support");
 
    type On_Timer_Function is access
@@ -44,6 +44,8 @@ package CfA.Extensions.Timer_Support is
    type CLAP_Plugin_Timer_Support_Access is access CLAP_Plugin_Timer_Support
      with Convention => C;
 
+   -------------------------------------------------------------------------------------------------
+
    type Register_Timer_Function is access
      function (Host      : Hosts.CLAP_Host_Access;
                Period_Ms : UInt32_t;
@@ -53,6 +55,7 @@ package CfA.Extensions.Timer_Support is
    --  Registers a periodic timer.
    --  The host may adjust the period if it is under a certain threshold.
    --  30 Hz should be allowed.
+   --  Returns true on success.
    --  [main-thread]
 
    type Unregister_Timer_Function is access
@@ -60,6 +63,7 @@ package CfA.Extensions.Timer_Support is
                Timer_ID : CLAP_ID)
                return Bool
      with Convention => C;
+   --  Returns true on success.
    --  [main-thread]
 
    type CLAP_Host_Timer_Support is

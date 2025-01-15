@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -68,7 +68,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Thread_Pool is
 
-   CLAP_Ext_Thread_Pool : constant Char_Ptr
+   CLAP_Ext_Thread_Pool : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.thread-pool");
 
    type Exec_Function is access

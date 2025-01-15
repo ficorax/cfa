@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -42,9 +42,9 @@
 with CfA.Plugins;
 with CfA.Streams;
 
-package CfA.Extensions.Draft.State_Contextes is
+package CfA.Extensions.State_Context is
 
-   CLAP_Ext_State_Context : constant Char_Ptr
+   CLAP_Ext_State_Context : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.state-context.draft/1");
 
    type CLAP_Plugin_State_Context_Type is
@@ -53,7 +53,7 @@ package CfA.Extensions.Draft.State_Contextes is
     --  suitable for duplicating a plugin instance
 
     CLAP_STATE_CONTEXT_FOR_PRESET
-    --  suitable for loading a state as a preset
+    --  suitable for loading a state Chars_Ptrset
    ) with Convention => C, Size => 32;
 
    type Save_Function is access
@@ -89,4 +89,4 @@ package CfA.Extensions.Draft.State_Contextes is
       end record
      with Convention => C;
 
-end CfA.Extensions.Draft.State_Contextes;
+end CfA.Extensions.State_Context;

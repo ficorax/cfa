@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,10 @@ with CfA.Plugins;
 
 package CfA.Extensions.Tail is
 
-   CLAP_Ext_Tail : constant Char_Ptr :=
+   CLAP_Ext_Tail : constant Chars_Ptr :=
                      Interfaces.C.Strings.New_String ("clap.tail");
+
+   -------------------------------------------------------------------------------------------------
 
    type Get_Function is access
      function (Plugin : Plugins.CLAP_Plugin_Access) return UInt32_t
@@ -44,6 +46,8 @@ package CfA.Extensions.Tail is
 
    type CLAP_Plugin_Tail_Access is access CLAP_Plugin_Tail
      with Convention => C;
+
+   -------------------------------------------------------------------------------------------------
 
    type Changed_Function is access
      procedure (Host : Hosts.CLAP_Host_Access)

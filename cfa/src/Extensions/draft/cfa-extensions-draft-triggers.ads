@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,18 @@
 --  ------------------------------------------------------------------------------------------------
 --  Given that this extension is still draft, it'll use the event-registry and its own event
 --  namespace until we stabilize it.
+--
+--  #include <clap/ext/event-registry.h>
+--
+--  uint16_t CLAP_EXT_TRIGGER_EVENT_SPACE_ID = UINT16_MAX;
+--  if (host_event_registry->query(host, CLAP_EXT_TRIGGERS, &CLAP_EXT_TRIGGER_EVENT_SPACE_ID)) {
+--    /* we can use trigger events */
+--  }
+--
+--  /* later on */
+--  clap_event_trigger ev;
+--  ev.header.space_id = CLAP_EXT_TRIGGER_EVENT_SPACE_ID;
+--  ev.header.type = CLAP_EVENT_TRIGGER;
 
 with CfA.Events;
 with CfA.Hosts;
@@ -40,8 +52,8 @@ with CfA.Plugins;
 
 package CfA.Extensions.Draft.Triggers is
 
-   CLAP_Ext_Triggers : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.triggers.draft/0");
+   CLAP_Ext_Triggers : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.triggers/1");
 
    type CLAP_Trigger_Info_Flag_Index is
      (
@@ -67,7 +79,7 @@ package CfA.Extensions.Draft.Triggers is
 
    type CLAP_Event_Trigger is
       record
-         Header : Events.CLAP_Event_Header;
+         Header     : Events.CLAP_Event_Header;
 
          --  target trigger
          Trigger_ID : CLAP_ID;  --  CLAP_Trigger_Info.Id
@@ -130,6 +142,11 @@ package CfA.Extensions.Draft.Triggers is
          Get_Info : Get_Info_Function;
       end record
      with Convention => C;
+
+   type CLAP_Plugin_Triggers_Access is access all CLAP_Plugin_Triggers
+     with Convention => C;
+
+   -------------------------------------------------------------------------------------------------
 
    type CLAP_Trigger_Rescan_Index is
      (

@@ -16,8 +16,8 @@ package body Extensions is
    --  My_Plugin_Get_Extension  --
    -------------------------------
 
-   function My_Plugin_Get_Extension (Plugin : CLAP_Plugin_Access;
-                                       ID     : Char_Ptr)
+   function My_Plugin_Get_Extension (Plugin   : CLAP_Plugin_Access;
+                                       ID     : CfA.Chars_Ptr)
                                        return System.Address
    is
       pragma Unreferenced (Plugin);

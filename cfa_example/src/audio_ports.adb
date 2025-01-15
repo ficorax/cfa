@@ -43,7 +43,7 @@ package body Audio_Ports is
       Info.Name (Info.Name'First .. Info.Name'First + Port_Name'Length - 1)
                  := Port_Name;
       Info.Channel_Count := 2;
-      Info.Flags (Is_Main) := True;
+      Info.Flags (CLAP_Audio_Port_Is_Main) := True;
       Info.Port_Type := CLAP_Port_Stereo;
       Info.In_Place_Pair := CLAP_Invalid_ID;
       return Bool'(True);

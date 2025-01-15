@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -25,18 +25,18 @@ with CfA.Plugins;
 
 package CfA.Extensions.Render is
 
-   CLAP_Ext_Render : constant Char_Ptr :=
+   CLAP_Ext_Render : constant Chars_Ptr :=
                        Interfaces.C.Strings.New_String ("clap.render");
 
    type CLAP_Plugin_Render_Mode is
      (
-      Realtime,
+      CLAP_Render_Realtime,
       --  Default setting, for "realtime" processing
 
-      Offline
+      CLAP_Render_Offline
       --  For processing without realtime pressure
       --  The plugin may use more expensive algorithms for higher sound quality.
-     ) with Convention => C;
+     ) with Convention => C, Size => 32;
 
    --  The render extension is used to let the plugin know if it has "realtime"
    --  pressure to process.

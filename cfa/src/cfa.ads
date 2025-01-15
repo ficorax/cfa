@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -59,9 +59,9 @@ package CfA is
    type CLAP_Float is new Interfaces.C.C_float;
    type CLAP_Double is new Interfaces.C.double;
 
-   subtype Char_Ptr is Interfaces.C.Strings.chars_ptr;
+   subtype Chars_Ptr is Interfaces.C.Strings.chars_ptr;
 
-   Null_Ptr : constant Char_Ptr := Interfaces.C.Strings.Null_Ptr;
+   Null_Ptr : constant Chars_Ptr := Interfaces.C.Strings.Null_Ptr;
 
    type CLAP_ID is new UInt32_t;
 
@@ -69,6 +69,8 @@ package CfA is
      with Convention => C;
 
    subtype Void_Ptr is System.Address;
+
+   Null_Void_Ptr : constant Void_Ptr := Void_Ptr (System.Null_Address);
 
    CLAP_Invalid_ID : constant CLAP_ID := CLAP_ID'Last;
 
@@ -81,5 +83,12 @@ package CfA is
    --
    --  This is not suited for describing a file path on the disk, as NTFS allows
    --  up to 32K long paths.
+
+   type CLAP_Timestamp is new UInt64_t;
+   --  This type defines a timestamp: the number of seconds since UNIX EPOCH.
+   --  See C's time_t time(time_t *).
+
+   --  Value for unknown timestamp.
+   CLAP_Timestamp_Unknown : constant CLAP_Timestamp := 0;
 
 end CfA;

@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -38,21 +38,21 @@ package CfA.Extensions.Note_Ports is
 
    use type Interfaces.C.size_t;
 
-   CLAP_Ext_Note_Ports : constant Char_Ptr :=
+   CLAP_Ext_Note_Ports : constant Chars_Ptr :=
                            Interfaces.C.Strings.New_String ("clap.note-ports");
 
    type Note_Dialect_Index is
      (
       --  Uses clap_event_note and clap_event_note_expression.
-      CLAP,
+      CLAP_Note_Dialect_CLAP,
 
-      MIDI,
+      CLAP_Note_Dialect_MIDI,
       --  Uses clap_event_midi, no polyphonic expression
 
-      MIDI_MPE,
+      CLAP_Note_Dialect_MIDI_MPE,
       --  Uses clap_event_midi, with polyphonic expression (MPE)
 
-      MIDI2
+      CLAP_Note_Dialect_MIDI2
       --  Uses clap_event_midi2
      ) with Convention => C;
 
@@ -70,8 +70,8 @@ package CfA.Extensions.Note_Ports is
          Supported_Dialects : CLAP_Note_Dialect := (others => False);
          --  bitfield, see clap_note_dialect
 
-         Preferred_Dialect  : CLAP_Note_Dialect := (CLAP   => True,
-                                                    others => False);
+         Preferred_Dialect  : CLAP_Note_Dialect := (CLAP_Note_Dialect_CLAP   => True,
+                                                    others                   => False);
          --  one value of clap_note_dialect
 
          Name               : Interfaces.C.char_array (0 .. CLAP_Name_Size - 1);
@@ -113,14 +113,14 @@ package CfA.Extensions.Note_Ports is
 
    type Note_Ports_Rescan_Index is
      (
-      Rescan_All,
+      CLAP_Note_Ports_Rescan_All,
       --  The ports have changed, the host shall perform a full scan of
       --  the ports.
       --  This flag can only be used if the plugin is not active.
       --  If the plugin active, call Host.Request_Restart and then call Rescan
       --  when the host calls Deactivate
 
-      Names
+      CLAP_Note_Ports_Rescan_Names
       --  The ports name did change, the host can scan them right away.
      ) with Convention => C;
 

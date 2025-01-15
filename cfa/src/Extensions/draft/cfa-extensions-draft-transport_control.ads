@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,10 @@ with CfA.Hosts;
 
 package CfA.Extensions.Draft.Transport_Control is
 
-   CLAP_Ext_Transport_Control : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.transport-control.draft/0");
+   CLAP_Ext_Transport_Control : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.transport-control.draft/1");
+
+   -------------------------------------------------------------------------------------------------
 
    type Request_Start_Function is access
      procedure (Host : Hosts.CLAP_Host_Access)
@@ -108,16 +110,16 @@ package CfA.Extensions.Draft.Transport_Control is
 
    type CLAP_Host_Transport_Control is
       record
-         Request_Start         : Request_Start_Function := null;
-         Request_Stop          : Request_Stop_Function := null;
-         Request_Continue      : Request_Continue_Function := null;
-         Request_Pause         : Request_Pause_Function := null;
-         Request_Toggle_Play   : Request_Toggle_Play_Function := null;
-         Request_Jump          : Request_Jump_Function := null;
-         Request_Loop_Region   : Request_Loop_Region_Function := null;
-         Request_Toggle_Loop   : Request_Toggle_Loop_Function := null;
-         Request_Enable_Loop   : Request_Enable_Loop_Function := null;
-         Request_Record        : Request_Record_Function := null;
+         Request_Start         : Request_Start_Function         := null;
+         Request_Stop          : Request_Stop_Function          := null;
+         Request_Continue      : Request_Continue_Function      := null;
+         Request_Pause         : Request_Pause_Function         := null;
+         Request_Toggle_Play   : Request_Toggle_Play_Function   := null;
+         Request_Jump          : Request_Jump_Function          := null;
+         Request_Loop_Region   : Request_Loop_Region_Function   := null;
+         Request_Toggle_Loop   : Request_Toggle_Loop_Function   := null;
+         Request_Enable_Loop   : Request_Enable_Loop_Function   := null;
+         Request_Record        : Request_Record_Function        := null;
          Request_Toggle_Record : Request_Toggle_Record_Function := null;
       end record
      with Convention => C;

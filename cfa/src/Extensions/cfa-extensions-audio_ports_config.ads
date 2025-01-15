@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -56,30 +56,35 @@ package CfA.Extensions.Audio_Ports_Config is
    use Interfaces.C;
    use Interfaces.C.Strings;
 
-   CLAP_Ext_Audio_Ports_Config : constant Char_Ptr :=
+   CLAP_Ext_Audio_Ports_Config : constant Chars_Ptr :=
                                    New_String ("clap.audio-ports-config");
 
-   CLAP_Ext_Audio_Ports_Config_Info : constant Char_Ptr :=
+   CLAP_Ext_Audio_Ports_Config_Info : constant Chars_Ptr :=
+                                   New_String ("clap.audio-ports-config_info/1");
+
+   CLAP_Ext_Audio_Ports_Config_Info_Compat : constant Chars_Ptr :=
                                    New_String ("clap.audio-ports-config_info/draft-0");
+   --  The latest draft is 100% compatible.
+   --  This compat ID may be removed in 2026.
 
    --  Minimalistic description of ports configuration
    type CLAP_Audio_Ports_Config is
       record
-         ID   : CLAP_ID;
-         Name : char_array (0 .. CLAP_Name_Size - 1);
+         ID                        : CLAP_ID;
+         Name                      : char_array (0 .. CLAP_Name_Size - 1);
 
-         Input_Port_Count  : UInt32_t := 0;
-         Output_Port_Count : UInt32_t := 0;
+         Input_Port_Count          : UInt32_t := 0;
+         Output_Port_Count         : UInt32_t := 0;
 
          --  main input info
-         Has_Main_Input           : Bool := False;
-         Main_Input_Channel_Count : UInt32_t := 0;
-         Main_Input_Port_Type     : Char_Ptr := Null_Ptr;
+         Has_Main_Input            : Bool     := False;
+         Main_Input_Channel_Count  : UInt32_t := 0;
+         Main_Input_Port_Type      : Chars_Ptr := Null_Ptr;
 
          --  main output info
-         Has_Main_Output           : Bool := False;
+         Has_Main_Output           : Bool     := False;
          Main_Output_Channel_Count : UInt32_t := 0;
-         Main_Output_Port_Type     : Char_Ptr := Null_Ptr;
+         Main_Output_Port_Type     : Chars_Ptr := Null_Ptr;
       end record
      with Convention => C;
 

@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,7 @@ package CfA.Processes is
 
    type CLAP_Process is
       record
+         Steady_Time  : Int64_t := 0;
          --  A steady sample time counter.
          --  This field can be used to calculate the sleep duration between two process calls.
          --  This value may be specific to this plugin instance and have no relation to what
@@ -54,31 +55,30 @@ package CfA.Processes is
          --
          --  Set to -1 if not available, otherwise the value must be greater or equal to 0,
          --  and must be increased by at least `frames_count` for the next call to process.
-         Steady_Time  : Int64_t := 0;
 
-         --  Number of frames to process
          Frames_Count : UInt32_t := 0;
+         --  Number of frames to process
 
+         Transport    : CfA.Events.CLAP_Event_Transport_Access := null;
          --  time info at sample 0
          --  If null, then this is a free running host, no transport events will be provided
-         Transport    : CfA.Events.CLAP_Event_Transport_Access := null;
 
+         Audio_Inputs  : Void_Ptr := System.Null_Address;
+         Audio_Outputs : Void_Ptr := System.Null_Address;
+         Audio_Inputs_Count  : UInt32_t := 0;
+         Audio_Outputs_Count : UInt32_t := 0;
          --  Audio buffers, they must have the same count as specified
          --  by CLAP_Plugin_Audio_Ports.Count.
          --  The index maps to CLAP_Plugin_Audio_Ports.Get.
          --  Input buffer and its contents are read-only.
-         Audio_Inputs  : Void_Ptr := System.Null_Address;
-         Audio_Outputs : Void_Ptr := System.Null_Address;
 
-         Audio_Inputs_Count  : UInt32_t := 0;
-         Audio_Outputs_Count : UInt32_t := 0;
-
-         --  Input and output events.
-         --
-         --  Events must be sorted by time.
-         --  The input event list can't be modified.
          In_Events  : Events.CLAP_Input_Events_Access := null;
-         Out_Events : Events.CLAP_Output_Events_Access := null;
+         --  The input event list can't be modified.
+         --  Input read-only event list. The host will deliver these sorted in sample order.
+
+         Out_Events   : Events.CLAP_Output_Events_Access := null;
+         --  Output event list. The plugin must insert events in sample sorted order when
+         --  inserting events
       end record
      with Convention => C;
 

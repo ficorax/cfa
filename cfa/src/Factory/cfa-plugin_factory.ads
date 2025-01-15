@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,20 @@ with CfA.Plugins;
 
 package CfA.Plugin_Factory is
 
-   CLAP_Plugin_Factory_ID : constant Char_Ptr
+   CLAP_Plugin_Factory_ID : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.plugin-factory");
+   --  Use it to retrieve Clap_Plugin_Factory from
+   --  Clap_Plugin_Entry.Get_Factory
 
    type CLAP_Plugin_Factory;
    type CLAP_Plugin_Factory_Access is access all CLAP_Plugin_Factory
      with Convention => C;
+
+   --  Every method must be thread-safe.
+   --  It is very important to be able to scan the plugin as quickly as possible.
+   --
+   --  The host may use clap_plugin_invalidation_factory to detect filesystem changes
+   --  which may change the factory's content.
 
    type Get_Plugin_Count_Function is access
      function (Factory : CLAP_Plugin_Factory_Access) return UInt32_t
@@ -52,7 +60,7 @@ package CfA.Plugin_Factory is
    type Create_Plugin_Function is access
      function (Factory   : CLAP_Plugin_Factory_Access;
                Host      : CfA.Hosts.CLAP_Host_Access;
-               Plugin_ID : Char_Ptr)
+               Plugin_ID : Chars_Ptr)
                return CfA.Plugins.CLAP_Plugin_Access
      with Convention => C;
    --  Create a clap_plugin by its Plugin_ID.
@@ -61,12 +69,6 @@ package CfA.Plugin_Factory is
    --  Returns null in case of error.
    --  [thread-safe]
 
-   --  Every method must be thread-safe.
-   --  It is very important to be able to scan the plugin as quickly as
-   --  possible.
-   --
-   --  The host may use CLAP_Plugin_Invalidation_Factory to detect filesystem changes
-   --  which may change the factory's content.
    type CLAP_Plugin_Factory is
       record
          Get_Plugin_Count      : Get_Plugin_Count_Function := null;

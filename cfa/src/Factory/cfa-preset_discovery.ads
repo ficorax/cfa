@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -56,19 +56,39 @@
 --
 --  VERY IMPORTANT:
 --  - the whole indexing process has to be **fast**
---     - CLAP_Preset_Provider->get_Metadata has to be fast and avoid unnecessary operations
+--     - CLAP_Preset_Provider.Get_Metadata has to be fast and avoid unnecessary operations
 --  - the whole indexing process must not be interactive
---     - don't show dialogs, windows, ...
+--    - don't show dialogs, windows, ...
+--    - don't ask for user input
 
+with CfA.Universal_Plugin_ID;
 with CfA.Version;
 
-package CfA.Factories.Draft.Preset_Discovery is
+package CfA.Preset_Discovery is
 
+   CLAP_Preset_Discovery_Factory_ID : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.preset-discovery-factory/2");
    --  Use it to retrieve const CLAP_Preset_Discovery_Factory from
    --  CLAP_Plugin_Entry.Get_Factory
 
-   CLAP_Preset_Discovery_Factory_ID : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.preset-discovery-factory/draft-1");
+   CLAP_Preset_Discovery_Factory_ID_Compat : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.preset-discovery-factory/draft-2");
+   --  The latest draft is 100% compatible.
+   --  This compat ID may be removed in 2026.
+
+   type CLAP_Preset_Discovery_Location_Kind is
+     (
+      CLAP_Preset_Discovery_Location_File,
+      --  The preset are located in a file on the OS filesystem.
+      --  The location is then a path which works with the OS file system functions
+      --  (open, stat, ...)
+      --  So both '/' and '\' shall work on Windows as a separator.
+
+      CLAP_Preset_Discovery_Location_Plugin
+      --  The preset is bundled within the plugin DSO itself.
+      --  The location must then be null, as the preset are within the plugin itself
+      --  and then the plugin will act as a preset container.
+     ) with Convention => C;
 
    type CLAP_Preset_Discovery_Index is
      (
@@ -93,30 +113,12 @@ package CfA.Factories.Draft.Preset_Discovery is
      with Pack, Size => UInt32_t'Size;
    pragma Warnings (On);
 
-   --  TODO: move CLAP_Timestamp, CLAP_Timestamp_Unknown and CLAP_Plugin_ID to parent files once we
-   --  settle with preset discovery
-
-   type CLAP_Timestamp is new UInt64_t;
-   --  This type defines a timestamp: the number of seconds since UNIX EPOCH.
-   --  See C's time_t time(time_t *).
-
-   CLAP_Timestamp_Unknown : constant CLAP_Timestamp := 0;
-   --  Value for unknown timestamp.
-
-   --  Pair of plugin ABI and plugin identifier
-   type CLAP_Plugin_ID is
-      record
-         ABI : Char_Ptr;
-         --  The plugin ABI name, in lowercase.
-         --  eg: "clap"
-
-         ID  : Char_Ptr;
-         --  The plugin ID, for example "com.u-he.Diva".
-         --  If the ABI rely upon binary plugin ids, then they shall be hex encoded (lower case).
-      end record
-     with Convention => C;
-
    -------------------------------------------------------------------------------------------------
+   --  Receiver that receives the metadata for a single preset file.
+   --  The host would define the various callbacks in this interface and the preset parser function
+   --  would then call them.
+   --
+   --  This interface isn't thread-safe.
 
    type CLAP_Preset_Discovery_Metadata_Receiver;
    type CLAP_Preset_Discovery_Metadata_Receiver_Access is
@@ -126,7 +128,7 @@ package CfA.Factories.Draft.Preset_Discovery is
    type On_Error_Function is access
      procedure (Receiver      : CLAP_Preset_Discovery_Metadata_Receiver_Access;
                 Os_Error      : Int32_t;
-                Error_Message : Char_Ptr)
+                Error_Message : Chars_Ptr)
      with Convention => C;
    --  If there is an error reading metadata from a file this should be called with an error
    --  message.
@@ -135,8 +137,8 @@ package CfA.Factories.Draft.Preset_Discovery is
 
    type Begin_Preset_Function is access
      function (Receiver : CLAP_Preset_Discovery_Metadata_Receiver_Access;
-               Name     : Char_Ptr;
-               Load_Key : Char_Ptr)
+               Name     : Chars_Ptr;
+               Load_Key : Chars_Ptr)
                return Bool
      with Convention => C;
    --  This must be called for every preset in the file and before any preset metadata is
@@ -154,7 +156,7 @@ package CfA.Factories.Draft.Preset_Discovery is
 
    type Add_Plugin_ID_Funciotn is access
      procedure (Receiver  : CLAP_Preset_Discovery_Metadata_Receiver_Access;
-                Plugin_ID : CLAP_Plugin_ID)
+                Plugin_ID : Universal_Plugin_ID.CLAP_Universal_Plugin_ID)
      with Convention => C;
    --  Adds a plug-in id that this preset can be used with.
 
@@ -243,7 +245,7 @@ package CfA.Factories.Draft.Preset_Discovery is
    type CLAP_Preset_Discovery_Filetype is
       record
          Name           : Interfaces.C.Strings.chars_ptr;
-         Description    : Interfaces.C.Strings.chars_ptr;
+         Description    : Interfaces.C.Strings.chars_ptr;  -- optional
 
          File_Extension : Interfaces.C.Strings.chars_ptr;
          --  `.' isn't included in the string.
@@ -263,14 +265,13 @@ package CfA.Factories.Draft.Preset_Discovery is
          Name  : Interfaces.C.Strings.chars_ptr;
          --  name of this location
 
-         URI   : Interfaces.C.Strings.chars_ptr;
-         --  URI:
-         --  - file:--  for pointing to a file or directory; directories are scanned recursively
-         --    eg: file:--/home/abique/.u-he/Diva/Presets/Diva (on Linux)
-         --    eg: file:--/C:/Users/abique/Documents/u-he/Diva.data/Presets/ (on Windows)
-         --
-         --  - plugin:--  for presets which are bundled within the plugin DSO.
-         --    In that case, the uri must be exactly `plugin:--` and nothing more.
+         Kind  : CLAP_Preset_Discovery_Location_Kind;
+         --  See Clap_Preset_Discovery_Location_Kind
+
+         Location : Chars_Ptr;
+         --  Actual location in which to crawl presets.
+         --  For FILE kind, the location can be either a path to a directory or a file.
+         --  For PLUGIN kind, the location must be null.
       end record
      with Convention => C;
 
@@ -357,7 +358,7 @@ package CfA.Factories.Draft.Preset_Discovery is
      with Convention => C;
    --  reads metadata from the given file and passes them to the metadata receiver
 
-   type Get_Provider_Extension_Function is access
+   type Get_Extension_Function is access
      function (Provider     : CLAP_Preset_Discovery_Provider_Access;
                Extension_ID : Interfaces.C.Strings.chars_ptr)
                return Void_Ptr
@@ -378,7 +379,7 @@ package CfA.Factories.Draft.Preset_Discovery is
          Init          : Init_Function;
          Destroy       : Destroy_Function;
          Get_Metadata  : Get_Metadata_Function;
-         Get_Extension : Get_Provider_Extension_Function;
+         Get_Extension : Get_Extension_Function;
       end record
      with Convention => C;
 
@@ -504,4 +505,4 @@ package CfA.Factories.Draft.Preset_Discovery is
       end record
      with Convention => C;
 
-end CfA.Factories.Draft.Preset_Discovery;
+end CfA.Preset_Discovery;

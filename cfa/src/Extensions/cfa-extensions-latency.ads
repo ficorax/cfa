@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Latency is
 
-   CLAP_Ext_Latency : constant Char_Ptr :=
+   CLAP_Ext_Latency : constant Chars_Ptr :=
                         Interfaces.C.Strings.New_String ("clap.latency");
 
    --  The audio ports scan has to be done while the plugin is deactivated.

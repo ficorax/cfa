@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -70,6 +70,8 @@ package CfA.Plugin_Features is
    CLAP_Plugin_Feature_Distortion        : constant String := "distortion";
    CLAP_Plugin_Feature_Transient_Shaper  : constant String := "transient-shaper";
    CLAP_Plugin_Feature_Compressor        : constant String := "compressor";
+   CLAP_Plugin_Feature_Expander          : constant String := "expander";
+   CLAP_Plugin_Feature_Gate              : constant String := "gate";
    CLAP_Plugin_Feature_Limiter           : constant String := "limiter";
 
    CLAP_Plugin_Feature_Flanger           : constant String := "flanger";

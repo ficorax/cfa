@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,27 @@
 --  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 --  SOFTWARE.
 
+----------------------------------------------------------------------------------------------------
+--  State
+--
+--  State management
+--
+--  Plugins can implement this extension to save and restore both parameter
+--  values and non-parameter state. This is used to persist a plugin's state
+--  between project reloads, when duplicating and copying plugin instances, and
+--  for host-side preset management.
+--
+--  If you need to know if the save/load operation is meant for duplicating a plugin
+--  instance, for saving/loading a plugin preset or while saving/loading the project
+--  then consider implementing Clap_Ext_State_Context in addition to Clap_Ext_State.
+
 with CfA.Hosts;
 with CfA.Plugins;
 with CfA.Streams;
 
 package CfA.Extensions.State is
 
-   CLAP_Ext_State : constant Char_Ptr :=
+   CLAP_Ext_State : constant Chars_Ptr :=
                       Interfaces.C.Strings.New_String ("clap.state");
 
    type Save_Function is access

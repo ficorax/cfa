@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,26 @@
 --  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 --  SOFTWARE.
 
-----------------------------------------------------------------------------------------------------
---  Use it to retrieve CLAP_Plugin_Invalidation_Factory from
---  CLAP_Plugin_Entry.Get_Factory
+package CfA.Draft.Plugin_Invalidation is
 
-package CfA.Factories.Draft.Plugin_Invalidation is
+   CLAP_Plugin_Invalidation_Factory_ID : constant Chars_Ptr :=
+     Interfaces.C.Strings.New_String
+       ("clap.plugin-invalidation-factory/draft0");
+   --  Use it to retrieve const clap_plugin_invalidation_factory_t* from
+   --  clap_plugin_entry.get_factory()
 
    type CLAP_Plugin_Invalidation_Source is
       record
-         Directory : Char_Ptr := Null_Ptr;
+         Directory      : Chars_Ptr := Null_Ptr;
          --  Directory containing the file(s) to scan, must be absolute
 
-         Filename_Glob : Char_Ptr := Null_Ptr;
+         Filename_Glob  : Chars_Ptr := Null_Ptr;
          --  globing pattern, in the form *.dll
 
-         Recursive_Scan : Bool := False;
+         Recursive_Scan : Bool     := False;
          --  should the directory be scanned recursively?
       end record
-   with Convention => C;
-
-   CLAP_Plugin_Invalidation_Factory_ID : constant Char_Ptr :=
-     Interfaces.C.Strings.New_String
-       ("clap.plugin-invalidation-factory/draft0");
+     with Convention => C;
 
    --  Used to figure out when a plugin needs to be scanned again.
    --  Imagine a situation with a single entry point: my-plugin.clap which then
@@ -83,4 +81,4 @@ package CfA.Factories.Draft.Plugin_Invalidation is
       end record
      with Convention => C;
 
-end CfA.Factories.Draft.Plugin_Invalidation;
+end CfA.Draft.Plugin_Invalidation;

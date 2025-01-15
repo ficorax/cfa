@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +30,11 @@ package CfA.Events is
 
    type CLAP_Event_Flags_Index is
      (
-      Is_Live,
+      CLAP_Event_Is_Live,
       --  Indicate a live user event, for example a user turning a physical knob
       --  or playing a physical key.
 
-      Dont_Record
+      CLAP_Event_Dont_Record
       --  Indicate that the event should not be recorded.
       --  For example this is useful when a parameter changes because of a MIDI CC,
       --  because if the host records both the MIDI CC automation and the parameter
@@ -240,7 +240,7 @@ package CfA.Events is
 
          --  target parameter
          Param_ID : CLAP_ID;  -- Clap_Param_Info.ID
-         Cookie   : Void_Ptr := System.Null_Address;
+         Cookie   : Void_Ptr := Null_Void_Ptr;
          --  Clap_Param_Info.Cookie
 
          --  target a specific note_id, port, key and channel, -1 for global
@@ -262,7 +262,7 @@ package CfA.Events is
 
          --  target parameter
          Param_ID : CLAP_ID;  -- Clap_Param_Info.ID
-         Cookie   : Void_Ptr := System.Null_Address;
+         Cookie   : Void_Ptr := Null_Void_Ptr;
          --  Clap_Param_Info.Cookie
 
          --  target a specific note_id, port, key and channel, -1 for global
@@ -359,7 +359,7 @@ package CfA.Events is
          Header : CLAP_Event_Header := (others => <>);
 
          Port_Index : UInt16_t := 0;
-         Buffer     : Void_Ptr := System.Null_Address;
+         Buffer     : Void_Ptr := Null_Void_Ptr;
          --  MIDI buffer
          Size       : UInt32_t := 0;
       end record
@@ -428,7 +428,7 @@ package CfA.Events is
 
    type CLAP_Output_Events is
       record
-         Ctx : Void_Ptr := System.Null_Address;
+         Ctx : Void_Ptr := Null_Void_Ptr;
          --  reserved pointer for the list
 
          Try_Push : Try_Push_Function := null;

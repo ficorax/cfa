@@ -11,7 +11,7 @@ package body Factory is
    function Factory_Create_Plugin
      (Factory   : CLAP_Plugin_Factory_Access;
       Host      : CLAP_Host_Access;
-      Plugin_ID : Char_Ptr)
+      Plugin_ID : CfA.Chars_Ptr)
       return CLAP_Plugin_Access
    is
       pragma Unreferenced (Factory);

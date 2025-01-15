@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ package CfA.Extensions.Draft.Tunnings is
 
    use type Interfaces.C.size_t;
 
-   Clap_Ext_Tuning : constant Char_Ptr
+   Clap_Ext_Tuning : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.tuning.draft/2");
 
    --  Use CLAP_Host_Event_Registry.Query (Host, CLAP_Ext_Tuning, Space_ID) to

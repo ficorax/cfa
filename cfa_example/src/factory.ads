@@ -41,7 +41,7 @@ package Factory is
    function Factory_Create_Plugin
      (Factory   : CLAP_Plugin_Factory_Access;
       Host      : CLAP_Host_Access;
-      Plugin_ID : Char_Ptr)
+      Plugin_ID : Chars_Ptr)
       return CLAP_Plugin_Access
      with Export => True, Convention => C;
 

@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,14 @@
 with CfA.Hosts;
 with CfA.Plugins;
 
-package CfA.Extensions.Draft.Context_Menu is
+package CfA.Extensions.Context_Menu is
 
-   CLAP_Ext_Context_Menu : constant Char_Ptr
+   CLAP_Ext_Context_Menu : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.context-menu/1");
+
+   --  The latest draft is 100% compatible.
+   --  This compat ID may be removed in 2026.
+   CLAP_Ext_Context_Menu_Compat : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.context-menu.draft/0");
 
    --  There can be different target kind for a context menu
@@ -246,4 +251,4 @@ package CfA.Extensions.Draft.Context_Menu is
       end record
      with Convention => C;
 
-end CfA.Extensions.Draft.Context_Menu;
+end CfA.Extensions.Context_Menu;

@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -53,12 +53,17 @@
 with CfA.Hosts;
 with CfA.Plugins;
 
-package CfA.Extensions.Draft.Remote_Controls is
+package CfA.Extensions.Remote_Controls is
 
    use type Interfaces.C.size_t;
 
-   CLAP_Ext_Remote_Controls : constant Char_Ptr
+   CLAP_Ext_Remote_Controls : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.remote-controls/2");
+
+   CLAP_Ext_Remote_Controls_Compat : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.remote-controls.draft/2");
+   --  The latest draft is 100% compatible
+   --  This compat ID may be removed in 2026.
 
    CLAP_Remote_Controls_Count : constant Interfaces.C.size_t := 8;
 
@@ -75,6 +80,9 @@ package CfA.Extensions.Draft.Remote_Controls is
       end record
      with Convention => C;
 
+   type CLAP_Remote_Controls_Page_Access is access all CLAP_Remote_Controls_Page
+     with Convention => C;
+
    ----------------------------------------------------------------------------`--------------------
 
    type Count_Function is access
@@ -87,10 +95,11 @@ package CfA.Extensions.Draft.Remote_Controls is
    type Get_Function is access
      function (Plugin     : Plugins.CLAP_Plugin_Access;
                Page_Index : UInt32_t;
-               Page       : out CLAP_Remote_Controls_Page)
+               Page       : CLAP_Remote_Controls_Page_Access)
                return Bool
      with Convention => C;
    --  Get a page by index.
+   --  Returns true on success and stores the result into page.
    --  [main-thread]
 
    type CLAP_Plugin_Remote_Controls is
@@ -123,4 +132,4 @@ package CfA.Extensions.Draft.Remote_Controls is
       end record
      with Convention => C;
 
-end CfA.Extensions.Draft.Remote_Controls;
+end CfA.Extensions.Remote_Controls;

@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -34,12 +34,12 @@ with CfA.Plugins;
 
 package CfA.Extensions.Voice_Infos is
 
-   CLAP_Ext_Voice_Info : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.voice-info.draft/0");
+   CLAP_Ext_Voice_Info : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.voice-info");
 
    type CLAP_Voice_Info_Flags_Index is
      (
-      Supports_Overlapping_Notes
+      CLAP_Voice_Info_Supports_Overlapping_Notes
       --  Allows the host to send overlapping NOTE_ON events.
       --  The plugin will then rely upon the note_id to distinguish between
       --  them.
@@ -70,6 +70,8 @@ package CfA.Extensions.Voice_Infos is
       end record
      with Convention => C;
 
+   -------------------------------------------------------------------------------------------------
+
    type CLAP_Voice_Info_Access is access CLAP_Voice_Info
      with Convention => C;
 
@@ -89,6 +91,8 @@ package CfA.Extensions.Voice_Infos is
 
    type CLAP_Plugin_Voice_Info_Access is access CLAP_Plugin_Voice_Info
      with Convention => C;
+
+   -------------------------------------------------------------------------------------------------
 
    type Changed_Function is access
      procedure (Host : Hosts.CLAP_Host_Access)

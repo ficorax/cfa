@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,12 @@ package CfA.Extensions.Event_Registry is
 
    use Interfaces.C.Strings;
 
-   CLAP_Ext_Event_Registry : constant Char_Ptr :=
+   CLAP_Ext_Event_Registry : constant Chars_Ptr :=
                                New_String ("clap.event-registry");
 
    type Query_Function is access
      function (Host       : Hosts.CLAP_Host_Access;
-               Space_Name : Char_Ptr;
+               Space_Name : Chars_Ptr;
                Space_ID   : out UInt16_t)
                return Bool
      with Convention => C;

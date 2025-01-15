@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,14 @@
 with CfA.Colors;
 with CfA.Plugins;
 
-package CfA.Extensions.Draft.Param_Indication is
+package CfA.Extensions.Param_Indication is
 
-   CLAP_Ext_Param_Indication : constant Char_Ptr
+   CLAP_Ext_Param_Indication : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.param-indication/4");
+
+   --  The latest draft is 100% compatible.
+   --  This compat ID may be removed in 2026.
+   CLAP_Ext_Param_Indication_Compat : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.param-indication.draft/4");
 
    type CLAP_Param_Indication_Automation is
@@ -111,4 +116,4 @@ package CfA.Extensions.Draft.Param_Indication is
       end record
      with Convention => C;
 
-end CfA.Extensions.Draft.Param_Indication;
+end CfA.Extensions.Param_Indication;

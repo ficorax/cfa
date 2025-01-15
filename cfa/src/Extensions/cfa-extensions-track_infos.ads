@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -30,12 +30,17 @@ with CfA.Hosts;
 with CfA.Plugins;
 with CfA.Colors;
 
-package CfA.Extensions.Draft.Track_Infos is
+package CfA.Extensions.Track_Infos is
 
    use type Interfaces.C.size_t;
 
-   CLAP_Ext_Track_Info : constant Char_Ptr
+   CLAP_Ext_Track_Info : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.track-info/1");
+
+   CLAP_Ext_Track_Info_Compat : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.track-info.draft/1");
+   --  The latest draft is 100% compatible.
+   --  This compat ID may be removed in 2026.
 
    type CLAP_Track_Info_Flag_Index is
      (
@@ -60,13 +65,13 @@ package CfA.Extensions.Draft.Track_Infos is
 
    type CLAP_Track_Info is
       record
-         Flags : CLAP_Track_Info_Flags;
+         Flags                 : CLAP_Track_Info_Flags;
          --  Flags, see above
 
-         Name            : Interfaces.C.char_array (0 .. CLAP_Name_Size - 1);
+         Name                  : Interfaces.C.char_array (0 .. CLAP_Name_Size - 1);
          --  track name, available if flags contain CLAP_Track_Info_Has_Track_Name
 
-         Color           : CfA.Colors.CLAP_Color;
+         Color                 : CfA.Colors.CLAP_Color;
          --  track color, available if flags contain CLAP_Track_Info_Has_Track_Color
 
          Audio_Channel_Count   : UInt32_t := 0;
@@ -74,7 +79,7 @@ package CfA.Extensions.Draft.Track_Infos is
          --  see Extensions.Audio_Ports, type CLAP_Audio_Port_Info to learn how to use channel
          --  count and port type
 
-         Audio_Port_Type : Char_Ptr := Null_Ptr;
+         Audio_Port_Type       : Chars_Ptr := Null_Ptr;
       end record
      with Convention => C;
 
@@ -117,4 +122,4 @@ package CfA.Extensions.Draft.Track_Infos is
    type CLAP_Host_Track_Info_Access is access all CLAP_Host_Track_Info
      with Convention => C;
 
-end CfA.Extensions.Draft.Track_Infos;
+end CfA.Extensions.Track_Infos;

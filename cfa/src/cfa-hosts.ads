@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ package CfA.Hosts is
 
    type Get_Extension_Function is access
      function (Host         : CLAP_Host_Access;
-               Extension_ID : Char_Ptr)
+               Extension_ID : Chars_Ptr)
                return System.Address
    with Convention => C;
    --  Query an extension.
@@ -61,24 +61,22 @@ package CfA.Hosts is
 
    type CLAP_Host is
       record
+         Version          : CfA.Version.CLAP_Version  := CfA.Version.CLAP_Version_Init;
 
-         Version : CfA.Version.CLAP_Version := CfA.Version.CLAP_Version_Init;
-
-         Host_Data : Void_Ptr := System.Null_Address;
+         Host_Data        : Void_Ptr                  := Null_Void_Ptr;
          --  reserved pointer for the host
 
          --  name and version are mandatory.
-         Name         : Char_Ptr := Null_Ptr;  -- eg: "Bitwig Studio"
-         Vendor       : Char_Ptr := Null_Ptr;  -- eg: "Bitwig GmbH"
-         URL          : Char_Ptr := Null_Ptr;  -- eg: "https://bitwig.com"
-         Host_Version : Char_Ptr := Null_Ptr;
-         --  eg: "4.3", see CfA.Plugins for advice on how to format the version
+         Name             : Chars_Ptr                  := Null_Ptr;  -- eg: "Bitwig Studio"
+         Vendor           : Chars_Ptr                  := Null_Ptr;  -- eg: "Bitwig GmbH"
+         URL              : Chars_Ptr                  := Null_Ptr;  -- eg: "https://bitwig.com"
+         Host_Version     : Chars_Ptr                  := Null_Ptr;
+         --  eg           : "4.3", see CfA.Plugins for advice on how to format the version
 
-         Get_Extension    : Get_Extension_Function := null;
-         Request_Restart  : Request_Restart_Function := null;
-         Request_Process  : Request_Process_Function := null;
+         Get_Extension    : Get_Extension_Function    := null;
+         Request_Restart  : Request_Restart_Function  := null;
+         Request_Process  : Request_Process_Function  := null;
          Request_Callback : Request_Callback_Function := null;
-
       end record
      with Convention => C;
 

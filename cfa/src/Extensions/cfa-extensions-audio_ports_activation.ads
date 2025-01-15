@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2023 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -47,10 +47,15 @@
 
 with CfA.Plugins;
 
-package CfA.Extensions.Draft.Audio_Ports_Activation is
+package CfA.Extensions.Audio_Ports_Activation is
 
-   CLAP_Ext_Audio_Ports_Activation : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.audio-ports-activation/draft-1");
+   CLAP_Ext_Audio_Ports_Activation : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.audio-ports-activation/2");
+
+   CLAP_Ext_Audio_Ports_Activation_Compat : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.audio-ports-activation/draft-2");
+   --  The latest draft is 100% compatible.
+   --  This compat ID may be removed in 2026.
 
    type Can_Activate_While_Processing_Funcion is access
      function (Plugin : Plugins.CLAP_Plugin_Access)
@@ -68,9 +73,13 @@ package CfA.Extensions.Draft.Audio_Ports_Activation is
      with Convention => C;
    --  Activate the given port.
    --
-   --  It is only possible to activate and de-activate on the audio-thread
-   --  if Can_Activate_While_Processing returns True.
+   --  It is only possible to activate and de-activate on the audio-thread if
+   --  Can_Activate_While_Processing returns true.
    --
+   --  Sample_Size indicate if the host will provide 32 bit audio buffers or 64 bits one.
+   --  Possible values are: 32, 64 or 0 if unspecified.
+   --
+   --  returns false if failed, or invalid parameters
    --  [active ? audio-thread : main-thread]
 
    type CLAP_Plugin_Audio_Ports_Activation is
@@ -80,4 +89,4 @@ package CfA.Extensions.Draft.Audio_Ports_Activation is
       end record
      with Convention => C;
 
-end CfA.Extensions.Draft.Audio_Ports_Activation;
+end CfA.Extensions.Audio_Ports_Activation;

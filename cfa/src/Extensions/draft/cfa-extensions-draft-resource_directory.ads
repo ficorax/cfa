@@ -38,7 +38,7 @@
 --    -> suitable for read-write content
 --
 --  Keeping the shared directory clean:
---  - to avoid clashes in the shared directory, plugins are encourraged to organize their files in
+--  - to avoid clashes in the shared directory, plugins are encouraged to organize their files in
 --    sub-folders, for example create one subdirectory using the vendor name
 --  - don't use symbolic links or hard links which points outside of the directory
 --
@@ -49,26 +49,26 @@
 --    are removed from the project
 --
 --  Note for the host
---  - try to use the filesytem's copy-on-write feature when possible for reducing exclusive folder
+--  - try to use the filesystem's copy-on-write feature when possible for reducing exclusive folder
 --    space usage on duplication
 --  - host can "garbage collect" the files in the shared folder using:
---      CLAP_Plugin_Resource_Directory.Get_Files_Count
---      CLAP_Plugin_Resource_Directory.Get_File_Path
---    but be **very** careful before deleting any resource
+--      Clap_Plugin_Resource_Directory.Get_Files_Count
+--      Clap_Plugin_Resource_Directory.Get_File_Path
+--    but be **very** careful before deleting any resources
 
 with CfA.Hosts;
 with CfA.Plugins;
 
 package CfA.Extensions.Draft.Resource_Directory is
 
-   CLAP_Ext_Resource_Directory : constant Char_Ptr
-     := Interfaces.C.Strings.New_String ("clap.resource-directory.draft/0");
+   CLAP_Ext_Resource_Directory : constant Chars_Ptr
+     := Interfaces.C.Strings.New_String ("clap.resource-directory.draft/1");
 
    -------------------------------------------------------------------------------------------------
 
    type Set_Directory_Function is access
      procedure (Plugin    : Plugins.CLAP_Plugin_Access;
-                Path      : Interfaces.C.Strings.chars_ptr;
+                Path      : Chars_Ptr;
                 Is_Shared : Bool)
      with Convention => C;
    --  Sets the directory in which the plugin can save its resources.

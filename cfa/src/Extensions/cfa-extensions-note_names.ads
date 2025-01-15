@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ package CfA.Extensions.Note_Names is
 
    use type Interfaces.C.size_t;
 
-   CLAP_Ext_Note_Name : constant Char_Ptr
+   CLAP_Ext_Note_Name : constant Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.note-name");
 
    type CLAP_Note_Name is
@@ -60,7 +60,7 @@ package CfA.Extensions.Note_Names is
    type CLAP_Plugin_Note_Name is
       record
          Count : Count_Function := null;
-         Get   : Get_Function := null;
+         Get   : Get_Function   := null;
       end record
      with Convention => C;
 

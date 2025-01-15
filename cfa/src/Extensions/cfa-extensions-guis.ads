@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.GUIs is
 
-   CLAP_Ext_GUI : constant Char_Ptr :=
+   CLAP_Ext_GUI : constant Chars_Ptr :=
                     Interfaces.C.Strings.New_String ("clap.GUI");
 
    --  If your windowing API is not listed here, please open an issue and we'll
@@ -80,27 +80,27 @@ package CfA.Extensions.GUIs is
    --  uses physical size
    --  embed using https:--docs.microsoft.com/en-us/windows/win32/api/winuser/
    --                      nf-winuser-setparent
-   CLAP_Window_API_Win32 : constant Char_Ptr :=
+   CLAP_Window_API_Win32 : constant Chars_Ptr :=
                              Interfaces.C.Strings.New_String ("win32");
 
    --  uses logical size, don't CALL Clap_Plugin_GUI.Set_Scale
-   CLAP_Window_API_Cocoa : constant Char_Ptr :=
+   CLAP_Window_API_Cocoa : constant Chars_Ptr :=
                              Interfaces.C.Strings.New_String ("cocoa");
 
    --  uses physical size
    --  embed using https:--specifications.freedesktop.org/xembed-spec/
    --                      xembed-spec-latest.html
-   CLAP_Window_API_X11 : constant Char_Ptr :=
+   CLAP_Window_API_X11 : constant Chars_Ptr :=
                            Interfaces.C.Strings.New_String ("x11");
 
    --  uses physical size
    --  embed is currently not supported, use floating windows
-   CLAP_Window_API_Wayland : constant Char_Ptr :=
+   CLAP_Window_API_Wayland : constant Chars_Ptr :=
                                Interfaces.C.Strings.New_String ("wayland");
 
-   subtype CLAP_Hwnd is System.Address;
+   subtype CLAP_Hwnd   is System.Address;
    subtype CLAP_Nsview is System.Address;
-   subtype CLAP_Xwnd is Interfaces.C.unsigned_long;
+   subtype CLAP_Xwnd   is Interfaces.C.unsigned_long;
 
    --  Represent a window reference.
 
@@ -128,7 +128,7 @@ package CfA.Extensions.GUIs is
 
    type CLAP_Window is
       record
-         API    : Char_Ptr := Null_Ptr; --  one of CLAP_Window_API_XXX
+         API    : Chars_Ptr := Null_Ptr; --  one of CLAP_Window_API_XXX
          Handle : Window_API := (others => <>);
       end record
    with Convention => C;
@@ -282,7 +282,7 @@ package CfA.Extensions.GUIs is
 
    type Suggest_Title_Function is access
      procedure (Plugin : Plugins.CLAP_Plugin_Access;
-                Title  : Char_Ptr)
+                Title  : Chars_Ptr)
      with Convention => C;
    --  Suggests a window title. Only for floating windows.
    --  [main-thread & floating]
@@ -305,21 +305,21 @@ package CfA.Extensions.GUIs is
    --  pixels.
    type CLAP_Plugin_GUI is
       record
-         Is_API_Supported  : Is_API_Supported_Function := null;
+         Is_API_Supported  : Is_API_Supported_Function  := null;
          Get_Preferred_API : Get_Preferred_API_Function := null;
-         Create            : Create_Function := null;
-         Destroy           : Destroy_Function := null;
-         Set_Scale         : Set_Scale_Function := null;
-         Get_Size          : Get_Size_Function := null;
-         Can_Resize        : Can_Resize_Function := null;
-         Get_Resize_Hints  : Get_Resize_Hints_Function := null;
-         Adjust_Size       : Adjust_Size_Function := null;
-         Set_Size          : Set_Size_Function := null;
-         Set_Parent        : Set_Parent_Function := null;
-         Set_Transient     : Set_Transient_Function := null;
-         Suggest_Title     : Suggest_Title_Function := null;
-         Show              : Show_Function := null;
-         Hide              : Hide_Function := null;
+         Create            : Create_Function            := null;
+         Destroy           : Destroy_Function           := null;
+         Set_Scale         : Set_Scale_Function         := null;
+         Get_Size          : Get_Size_Function          := null;
+         Can_Resize        : Can_Resize_Function        := null;
+         Get_Resize_Hints  : Get_Resize_Hints_Function  := null;
+         Adjust_Size       : Adjust_Size_Function       := null;
+         Set_Size          : Set_Size_Function          := null;
+         Set_Parent        : Set_Parent_Function        := null;
+         Set_Transient     : Set_Transient_Function     := null;
+         Suggest_Title     : Suggest_Title_Function     := null;
+         Show              : Show_Function              := null;
+         Hide              : Hide_Function              := null;
       end record
      with Convention => C;
 
@@ -376,10 +376,10 @@ package CfA.Extensions.GUIs is
    type CLAP_Host_GUI is
       record
          Resize_Hints_Changed : Resize_Hints_Changed_Function := null;
-         Request_Resize       : Request_Resize_Function := null;
-         Request_Show         : Request_Show_Function := null;
-         Request_Hide         : Request_Hide_Function := null;
-         Closed               : Closed_Function := null;
+         Request_Resize       : Request_Resize_Function       := null;
+         Request_Show         : Request_Show_Function         := null;
+         Request_Hide         : Request_Hide_Function         := null;
+         Closed               : Closed_Function               := null;
       end record
      with Convention => C;
 

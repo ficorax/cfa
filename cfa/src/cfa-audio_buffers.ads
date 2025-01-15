@@ -1,7 +1,7 @@
 --  MIT License
 --
 --  Copyright (c) 2021 Alexandre BIQUE
---  Copyright (c) 2022 Marek Kuziel
+--  Copyright (c) 2025 Marek Kuziel
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a copy
 --  of this software and associated documentation files (the "Software"), to deal
@@ -48,12 +48,12 @@ package CfA.Audio_Buffers is
 
    type CLAP_Audio_Buffer is
       record
-         Data_32 : Void_Ptr := System.Null_Address;  --  float  **data32;
-         Data_64 : Void_Ptr := System.Null_Address;  --  double **data64;
+         Data_32       : Void_Ptr   := System.Null_Address;  --  float  **data32;
+         Data_64       : Void_Ptr   := System.Null_Address;  --  double **data64;
 
-         Channel_Count : UInt32_t := 0;
+         Channel_Count : UInt32_t   := 0;
 
-         Latency       : UInt32_t := 0;
+         Latency       : UInt32_t   := 0;
          --  latency from/to the audio interface
 
          Constant_Mask : Mask_Array := (others => False);
