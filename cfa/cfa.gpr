@@ -4,15 +4,16 @@ library project CfA is
    for Library_Name use "CfA";
    for Library_Version use Project'Library_Name & ".so." & CfA_Config.Crate_Version;
 
-   for Source_Dirs use ("src/", "src/Extensions", "src/Extensions/draft", "src/Factory", "src/Factory/Draft");
-   for Object_Dir use "obj";
-   for Create_Missing_Dirs use "True";
-   for Library_Dir use "lib";
+   for Source_Dirs use ("src/", "src/Extensions", "src/Extensions/Draft", "src/Factory", "src/Factory/Draft");
 
    type Library_Type_Type is ("relocatable", "static", "static-pic");
    Library_Type : Library_Type_Type :=
      external ("CFA_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static-pic"));
    for Library_Kind use Library_Type;
+
+   for Object_Dir use "obj/" & Cfa_Config.Build_Profile & "/" & Library_Type;
+   for Create_Missing_Dirs use "True";
+   for Library_Dir use "lib/" & Cfa_Config.Build_Profile & "/" & Library_Type;
 
    type Enabled_Kind is ("enabled", "disabled");
    Compile_Checks : Enabled_Kind := External ("CFA_COMPILE_CHECKS", "disabled");
