@@ -88,7 +88,7 @@ package CfA.Preset_Discovery is
       --  The preset is bundled within the plugin DSO itself.
       --  The location must then be null, as the preset are within the plugin itself
       --  and then the plugin will act as a preset container.
-     ) with Convention => C;
+     ) with Convention => C, Size => 32;
 
    type CLAP_Preset_Discovery_Index is
      (

@@ -112,7 +112,7 @@ package CfA.Extensions.Audio_Ports_Config is
    --  [main-thread]
 
    type Select_Config_Function is access
-     function (Plugin : Plugins.CLAP_Plugin_Access;
+     function (Plugin    : Plugins.CLAP_Plugin_Access;
                Config_ID : CLAP_ID)
                return Bool
      with Convention => C;

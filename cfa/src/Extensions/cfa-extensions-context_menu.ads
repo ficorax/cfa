@@ -197,6 +197,8 @@ package CfA.Extensions.Context_Menu is
       end record
      with Convention => C;
 
+   type CLAP_Plugin_Context_Menu_Access is access all CLAP_Plugin_Context_Menu
+     with Convention => C;
    -------------------------------------------------------------------------------------------------
 
    type Host_Populate_Function is access
@@ -249,6 +251,9 @@ package CfA.Extensions.Context_Menu is
          Can_Popup : Can_Popup_Function;
          Popup     : Popup_Function;
       end record
+     with Convention => C;
+
+   type CLAP_Host_Context_Menu_Access is access all CLAP_Host_Context_Menu
      with Convention => C;
 
 end CfA.Extensions.Context_Menu;

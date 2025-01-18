@@ -59,7 +59,7 @@ package CfA.Events is
    --  The plugins are encouraged to be able to handle note events encoded as raw midi or midi2,
    --  or implement CLAP_Plugin_Event_Filter and reject raw midi and midi2 events.
 
-   type CLAP_Events is new UInt16_t;
+   subtype CLAP_Events is UInt16_t;
 
    --  Note_On and Note_Off represent a key pressed and key released event, respectively.
    --  A Note_On with a velocity of 0 is valid and should not be interpreted as a Note_Off.

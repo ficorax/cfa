@@ -115,6 +115,9 @@ package CfA.Extensions.Draft.Resource_Directory is
       end record
      with Convention => C;
 
+   type CLAP_Plugin_Resource_Directory_Access is access all CLAP_Plugin_Resource_Directory
+     with Convention => C;
+
    -------------------------------------------------------------------------------------------------
 
    type Request_Directory_Function is access
@@ -139,6 +142,9 @@ package CfA.Extensions.Draft.Resource_Directory is
          Request_Directory : Request_Directory_Function;
          Release_Directory : Release_Directory_Function;
       end record
+     with Convention => C;
+
+   type CLAP_Host_Resource_Directory_Access is access all CLAP_Host_Resource_Directory
      with Convention => C;
 
 end CfA.Extensions.Draft.Resource_Directory;

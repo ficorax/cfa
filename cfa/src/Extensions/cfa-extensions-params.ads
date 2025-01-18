@@ -292,7 +292,7 @@ package CfA.Extensions.Params is
       end record
      with Convention => C;
 
-   type CLAP_Param_Info_Access is access CLAP_Param_Info
+   type CLAP_Param_Info_Access is access all CLAP_Param_Info
      with Convention => C;
 
    -------------------------------------------------------------------------------------------------
@@ -325,7 +325,7 @@ package CfA.Extensions.Params is
      function (Plugin              : Plugins.CLAP_Plugin_Access;
                Param_ID            : CLAP_ID;
                Value               : CLAP_Double;
-               Out_Buffer          : Chars_Ptr;
+               Out_Buffer          : out Chars_Ptr;
                Out_Buffer_Capacity : UInt32_t)
                return Bool
      with Convention => C;
@@ -334,10 +334,10 @@ package CfA.Extensions.Params is
    --  this to format parameter values before displaying it to the user. [main-thread]
 
    type Text_To_Value_Function is access
-     function (Plugin           :     Plugins.CLAP_Plugin_Access;
-               Param_ID         :     CLAP_ID;
-               Param_Value_Text :     Chars_Ptr;
-               Out_Value        : out CLAP_Double)
+     function (Plugin           :        Plugins.CLAP_Plugin_Access;
+               Param_ID         :        CLAP_ID;
+               Param_Value_Text :        Chars_Ptr;
+               Out_Value        : access CLAP_Double)
                return Bool
      with Convention => C;
    --  Converts the null-terminated UTF-8 param_value_text into a double and writes it to out_value.

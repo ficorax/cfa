@@ -109,6 +109,9 @@ package CfA.Extensions.Remote_Controls is
       end record
      with Convention => C;
 
+   type CLAP_Plugin_Remote_Controls_Access is access all CLAP_Plugin_Remote_Controls
+     with Convention => C;
+
    -------------------------------------------------------------------------------------------------
 
    type Changed_Function is access
@@ -130,6 +133,9 @@ package CfA.Extensions.Remote_Controls is
          Changed      : Changed_Function;
          Suggest_Page : Suggest_Page_Function;
       end record
+     with Convention => C;
+
+   type CLAP_Host_Remote_Controls_Access is access all CLAP_Host_Remote_Controls
      with Convention => C;
 
 end CfA.Extensions.Remote_Controls;

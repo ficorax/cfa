@@ -30,6 +30,8 @@ package CfA.Colors is
          Green : UInt8_t := 0;
          Blue  : UInt8_t := 0;
       end record
-   with Convention => C;
+     with Convention => C;
+
+   type CLAP_Color_Access is access all CLAP_Color;
 
 end CfA.Colors;

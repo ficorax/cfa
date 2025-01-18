@@ -30,16 +30,16 @@ package CfA.Extensions.Log is
 
    type CLAP_Log_Severity is
      (
-      Debug,
-      Info,
-      Warning,
-      Error,
-      Fatal,
+      CLAP_Log_Debug,
+      CLAP_Log_Info,
+      CLAP_Log_Warning,
+      CLAP_Log_Error,
+      CLAP_Log_Fatal,
 
       --  These severities should be used to report misbehaviour.
       --  The plugin one can be used by a layer between the plugin and the host.
-      Host_Misbehaving,
-      Plugin_Misbehaving
+      CLAP_Log_Host_Misbehaving,
+      CLAP_Log_Plugin_Misbehaving
      ) with Convention => C, Size => 32;
 
    type Log_Function is access

@@ -154,7 +154,7 @@ package CfA.Extensions.GUIs is
 
    type Is_API_Supported_Function is access
      function (Plugin      : Plugins.CLAP_Plugin_Access;
-               API         : Window_API_Access;
+               API         : Chars_Ptr;
                Is_Floating : Bool)
                return Bool
      with Convention => C;
@@ -163,8 +163,8 @@ package CfA.Extensions.GUIs is
 
    type Get_Preferred_API_Function is access
      function (Plugin      : Plugins.CLAP_Plugin_Access;
-               API         : Window_API_Access;
-               Is_Floating : Bool)
+               API         : out Chars_Ptr;
+               Is_Floating : out Bool)
                return  Bool
      with Convention => C;
    --  Returns True if the plugin has a preferred API.
@@ -177,18 +177,18 @@ package CfA.Extensions.GUIs is
 
    type Create_Function is access
      function (Plugin      : Plugins.CLAP_Plugin_Access;
-               API         : Window_API_Access;
+               API         : Chars_Ptr;
                Is_Floating : Bool)
                return Bool
      with Convention => C;
    --  Create and allocate all resources necessary for the GUI.
    --
-   --  If is_floating is True, then the window will not be managed by the host.
+   --  If Is_Floating is True, then the window will not be managed by the host.
    --  The plugin can set its window to stays above the parent window, see
    --  Set_Transient.
-   --  APIapi may be null or blank for floating window.
+   --  API api may be null or blank for floating window.
    --
-   --  If is_floating is False, then the plugin has to embbed its window into
+   --  If Is_Floating is False, then the plugin has to embbed its window into
    --  the parent window, see Set_Parent.
    --
    --  After this call, the GUI may not be visible yet; don't forget to call
@@ -203,7 +203,7 @@ package CfA.Extensions.GUIs is
 
    type Set_Scale_Function is access
      function (Plugin : Plugins.CLAP_Plugin_Access;
-               Scale  : Interfaces.C.double)
+               Scale  : CLAP_Double)
                return Bool
      with Convention => C;
    --  Set the absolute GUI scaling factor, and override any OS info.

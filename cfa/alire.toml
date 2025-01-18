@@ -1,6 +1,6 @@
 name = "cfa"
 description = "CLAP for Ada - thin bindings"
-version = "1.2.2."
+version = "1.2.2"
 licenses = "MIT"
 website = "https://github.com/ficorax/cfa"
 

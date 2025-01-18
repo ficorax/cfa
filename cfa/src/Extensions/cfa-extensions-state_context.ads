@@ -60,7 +60,7 @@ package CfA.Extensions.State_Context is
      function (Plugin       : Plugins.CLAP_Plugin_Access;
                Stream       : Streams.CLAP_Output_Stream_Access;
                Context_Type : CLAP_Plugin_State_Context_Type)
-               return Boolean
+               return Bool
      with Convention => C;
    --  Saves the plugin state into stream, according to Context_Type.
    --  Returns True if the state was correctly saved.
@@ -73,7 +73,7 @@ package CfA.Extensions.State_Context is
      function (Plugin       : Plugins.CLAP_Plugin_Access;
                Stream       : Streams.CLAP_Input_Stream_Access;
                Context_Type : CLAP_Plugin_State_Context_Type)
-               return Boolean
+               return Bool
      with Convention => C;
    --  Loads the plugin state from stream, according to Context_Type.
    --  Returns True if the state was correctly restored.

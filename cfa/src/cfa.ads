@@ -44,13 +44,13 @@ package CfA is
    type Bool is new Boolean
      with Convention => C, Size => Interfaces.C.C_bool'Size;
 
-   type UInt8_Array is array (Natural range <>) of UInt8_t
+   type UInt8_Array is array (Natural range <>) of aliased UInt8_t
      with Convention => C;
 
    type UInt8_Access is access UInt8_t
      with Convention => C;
 
-   type UInt32_Array is array (Natural range <>) of UInt32_t
+   type UInt32_Array is array (Natural range <>) of aliased UInt32_t
      with Convention => C;
 
    type UInt64_Access is access UInt64_t
@@ -63,9 +63,11 @@ package CfA is
 
    Null_Ptr : constant Chars_Ptr := Interfaces.C.Strings.Null_Ptr;
 
+   type CLAP_Fd_ID is new Interfaces.C.int;
+
    type CLAP_ID is new UInt32_t;
 
-   type CLAP_ID_Array is array (Interfaces.C.size_t range <>) of CLAP_ID
+   type CLAP_ID_Array is array (Interfaces.C.size_t range <>) of aliased CLAP_ID
      with Convention => C;
 
    subtype Void_Ptr is System.Address;

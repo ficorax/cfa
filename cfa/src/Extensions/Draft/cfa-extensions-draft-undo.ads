@@ -291,4 +291,7 @@ package CfA.Extensions.Draft.Undo is
       end record
      with Convention => C;
 
+   type CLAP_Host_Undo_Access is access all CLAP_Host_Undo
+     with Convention => C;
+
 end CfA.Extensions.Draft.Undo;

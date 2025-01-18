@@ -51,7 +51,7 @@ package CfA.Extensions.POSIX_Fd_Support is
 
    type On_Fd_Funcion is access
      procedure (Plugin : Plugins.CLAP_Plugin_Access;
-                Fd     : Integer;
+                Fd     : CLAP_Fd_ID;
                 Flags  : CLAP_Posix_Fd_Flags)
      with Convention => C;
    --  This callback is "level-triggered".
@@ -72,7 +72,7 @@ package CfA.Extensions.POSIX_Fd_Support is
 
    type Register_Fd_Function is access
      function (Host  : Hosts.CLAP_Host_Access;
-               Fd    : Integer;
+               Fd    : CLAP_Fd_ID;
                Flags : CLAP_Posix_Fd_Flags)
                return Bool
      with Convention => C;
@@ -80,7 +80,7 @@ package CfA.Extensions.POSIX_Fd_Support is
 
    type Modify_Fd_Function is access
      function (Host  : Hosts.CLAP_Host_Access;
-               Fd    : Integer;
+               Fd    : CLAP_Fd_ID;
                Flags : CLAP_Posix_Fd_Flags)
                return Bool
      with Convention => C;
@@ -88,7 +88,7 @@ package CfA.Extensions.POSIX_Fd_Support is
 
    type Unregister_Fd_Funcion is access
      function (Host : Hosts.CLAP_Host_Access;
-               Fd   : Integer)
+               Fd   : CLAP_Fd_ID)
                return Bool
      with Convention => C;
    --  [main-thread]

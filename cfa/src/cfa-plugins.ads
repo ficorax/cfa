@@ -162,7 +162,7 @@ package CfA.Plugins is
    type Get_Extension_Function is access
      function (P  : CLAP_Plugin_Access;
                ID : Chars_Ptr)
-               return System.Address
+               return Void_Ptr
      with Convention => C;
    --  Query an extension.
    --  The returned pointer is owned by the plugin.

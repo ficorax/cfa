@@ -23,6 +23,7 @@
 
 with CfA.Hosts;
 with CfA.Plugins;
+with CfA.Preset_Discovery;
 
 package CfA.Extensions.Preset_Loads is
 
@@ -36,7 +37,7 @@ package CfA.Extensions.Preset_Loads is
 
    type From_Location_Function is access
      function (Plugin        : Plugins.CLAP_Plugin_Access;
-               Location_Kind : UInt32_t;
+               Location_Kind : Preset_Discovery.CLAP_Preset_Discovery_Location_Kind;
                Location      : Chars_Ptr;
                Load_Key      : Chars_Ptr) return Bool
      with Convention => C;
@@ -61,7 +62,7 @@ package CfA.Extensions.Preset_Loads is
 
    type On_Error_Function is access
      procedure (Host          : Hosts.CLAP_Host_Access;
-                Location_Kind : UInt32_t;
+                Location_Kind : Preset_Discovery.CLAP_Preset_Discovery_Location_Kind;
                 Location      : Chars_Ptr;
                 OS_Error      : Int32_t;
                 Msg           : Chars_Ptr)
@@ -74,7 +75,7 @@ package CfA.Extensions.Preset_Loads is
 
    type Loaded_Function is access
      procedure (Host          : Hosts.CLAP_Host_Access;
-                Location_Kind : UInt32_t;
+                Location_Kind : Preset_Discovery.CLAP_Preset_Discovery_Location_Kind;
                 Location      : Chars_Ptr;
                 Load_Key      : Chars_Ptr)
      with Convention => C;
@@ -90,6 +91,9 @@ package CfA.Extensions.Preset_Loads is
          On_Error : On_Error_Function;
          Loaded   : Loaded_Function;
       end record
+     with Convention => C;
+
+   type CLAP_Host_Preset_Load_Access is access all CLAP_Host_Preset_Load
      with Convention => C;
 
 end CfA.Extensions.Preset_Loads;

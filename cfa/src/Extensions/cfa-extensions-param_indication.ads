@@ -79,7 +79,7 @@ package CfA.Extensions.Param_Indication is
      procedure (Plugin      : Plugins.CLAP_Plugin_Access;
                 Param_ID    : CLAP_ID;
                 Has_Mapping : Bool;
-                Color       : Colors.CLAP_Color;
+                Color       : Colors.CLAP_Color_Access;
                 Label       : Interfaces.C.Strings.chars_ptr;
                 Description : Interfaces.C.Strings.chars_ptr)
      with Convention => C;
@@ -99,7 +99,7 @@ package CfA.Extensions.Param_Indication is
      procedure (Plugin           : Plugins.CLAP_Plugin_Access;
                 Param_ID         : CLAP_ID;
                 Automation_State : CLAP_Param_Indication_Automation;
-                Color            : Colors.CLAP_Color)
+                Color            : Colors.CLAP_Color_Access)
      with Convention => C;
    --  Sets or clears an automation indication.
    --

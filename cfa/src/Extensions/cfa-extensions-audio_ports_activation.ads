@@ -65,10 +65,11 @@ package CfA.Extensions.Audio_Ports_Activation is
    --  [main-thread]
 
    type Set_Active_Function is access
-     function (Plugin     : Plugins.CLAP_Plugin_Access;
-               Is_Input   : Bool;
-               Port_Index : UInt32_t;
-               Is_Active  : Bool)
+     function (Plugin      : Plugins.CLAP_Plugin_Access;
+               Is_Input    : Bool;
+               Port_Index  : UInt32_t;
+               Is_Active   : Bool;
+               Sample_Size : UInt32_t)
                return Bool
      with Convention => C;
    --  Activate the given port.
