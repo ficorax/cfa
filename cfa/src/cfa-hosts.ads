@@ -31,7 +31,7 @@ package CfA.Hosts is
    type Get_Extension_Function is access
      function (Host         : CLAP_Host_Access;
                Extension_ID : Chars_Ptr)
-               return System.Address
+               return Void_Ptr
    with Convention => C;
    --  Query an extension.
    --  The returned pointer is owned by the host.
@@ -56,7 +56,7 @@ package CfA.Hosts is
    type Request_Callback_Function is access
      procedure (Host : CLAP_Host_Access)
    with Convention => C;
-   --  Request the host to schedule a call to plugin->on_main_thread(plugin) on the main thread.
+   --  Request the host to schedule a call to Plugin.On_Main_Thread (Plugin) on the main thread.
    --  [thread-safe]
 
    type CLAP_Host is

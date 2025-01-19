@@ -78,7 +78,7 @@ package CfA.Extensions.Configurable_Audio_Ports is
    --  or discarded together.
    --
    --  Once the configuration is successfully applied, it isn't necessary for the plugin to call
-   --  clap_host_audio_ports->changed(); and it isn't necessary for the host to scan the
+   --  Clap_Host_Audio_Ports.Changed; and it isn't necessary for the host to scan the
    --  audio ports.
    --
    --  Returns true if applied.

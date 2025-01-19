@@ -98,8 +98,8 @@ package CfA.Extensions.GUIs is
    CLAP_Window_API_Wayland : constant Chars_Ptr :=
                                Interfaces.C.Strings.New_String ("wayland");
 
-   subtype CLAP_Hwnd   is System.Address;
-   subtype CLAP_Nsview is System.Address;
+   subtype CLAP_Hwnd   is Void_Ptr;
+   subtype CLAP_Nsview is Void_Ptr;
    subtype CLAP_Xwnd   is Interfaces.C.unsigned_long;
 
    --  Represent a window reference.
@@ -119,7 +119,7 @@ package CfA.Extensions.GUIs is
                Win32 : CLAP_Hwnd := System.Null_Address;
 
             when Unknown_Idx =>    -- for anything defined outside of CLAP
-               Unknown : System.Address := System.Null_Address;
+               Unknown : Void_Ptr := Null_Void_Ptr;
          end case;
       end record
      with Convention => C, Unchecked_Union;
