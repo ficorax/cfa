@@ -138,8 +138,13 @@ package CfA.Events is
    CLAP_Events_MIDI2     : constant CLAP_Events := 12;
    --  raw midi 2 event; CLAP_Event_MIDI2
 
-   --  event header
-   --  must be the first attribute of the event
+   --  Event Header
+   --  All clap events start with an event header to determine the overall
+   --  size of the event and its type and space (a namespacing for types).
+   --  CLAP_Event objects are contiguous regions of memory which can be copied
+   --  with a memcpy of `size` bytes starting at the top of the header. As
+   --  such, be very careful when designing clap events with internal pointers
+   --  and other non-value-types to consider the lifetime of those members.
    type CLAP_Event_Header is
       record
          Size       : UInt32_t := 0;
@@ -307,6 +312,12 @@ package CfA.Events is
      with Pack, Size => 32;
    pragma Warnings (On);
 
+   --  CLAP_Event_Transport provides song position, tempo, and similar information
+   --  from the host to the plugin. There are two ways a host communicates these values.
+   --  In the `CLAP_Process` structure sent to each processing block, the host may
+   --  provide a transport structure which indicates the available information at the
+   --  start of the block. If the host provides sample-accurate tempo or transport changes,
+   --  it can also provide subsequent inter-block transport updates by delivering a new event.
    type CLAP_Event_Transport is
       record
          Header             : CLAP_Event_Header := (others => <>);
@@ -360,11 +371,27 @@ package CfA.Events is
 
          Port_Index : UInt16_t := 0;
          Buffer     : Void_Ptr := Null_Void_Ptr;
-         --  MIDI buffer
+         --  MIDI buffer. See lifetime comment above.
          Size       : UInt32_t := 0;
       end record
      with Convention => C;
 
+   --  CLAP_Event_Midi_SysEX contains a pointer to a sysex contents buffer.
+   --  // The lifetime of this buffer is (from Host.Plugin) only the process
+   --  // call in which the event is delivered or (from Plugin.Host) only the
+   --  // duration of a try_push call.
+   --  //
+   --  // Since `CLAP_Output_Events.Try_Push` requires hosts to make a copy of
+   --  // an event, host implementers receiving sysex messages from plugins need
+   --  // to take care to both copy the event (so header, size, etc...) but
+   --  // also memcpy the contents of the sysex pointer to host-owned memory, and
+   --  // not just copy the data pointer.
+   --  //
+   --  // Similarly plugins retaining the sysex outside the lifetime of a single
+   --  // process call must copy the sysex buffer to plugin-owned memory.
+   --  //
+   --  // As a consequence, the data structure pointed to by the sysex buffer
+   --  // must be contiguous and copyable with `memcpy` of `size` bytes.
    type CLAP_Event_MIDI_SysEX_Access is access CLAP_Event_MIDI_SysEX
      with Convention => C;
 

@@ -45,28 +45,28 @@ package CfA.Plugins is
          --    version strings, so here is a regex like expression which is likely to be
          --    understood by most hosts: MAJOR(.MINOR(.REVISION)?)?( (Alpha|Beta) XREV)?
 
-         ID          : Chars_Ptr := Null_Ptr;
+         ID          : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  eg: "com.u-he.diva", mandatory
 
-         Name        : Chars_Ptr := Null_Ptr;
+         Name        : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  eg: "Diva", mandatory
 
-         Vendor      : Chars_Ptr := Null_Ptr;
+         Vendor      : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  eg: "u-he"
 
-         URL         : Chars_Ptr := Null_Ptr;
+         URL         : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  eg: "https://u-he.com/products/diva/"
 
-         Manual_URL  : Chars_Ptr := Null_Ptr;
+         Manual_URL  : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  eg: "https://dl.u-he.com/manuals/plugins/diva/Diva-user-guide.pdf"
 
-         Support_URL : Chars_Ptr := Null_Ptr;
+         Support_URL : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  eg: "https://u-he.com/support/"
 
-         Version_Str : Chars_Ptr := Null_Ptr;
+         Version_Str : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  eg: "1.4.4"
 
-         Description : Chars_Ptr := Null_Ptr;
+         Description : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  eg: "The spirit of analogue"
 
          --  Arbitrary list of keywords.
@@ -115,6 +115,7 @@ package CfA.Plugins is
    --  In this call the plugin may allocate memory and prepare everything needed for the process
    --  call. The process's sample rate will be constant and process's frame count will included in
    --  the [min, max] range, which is bounded by [1, INT32_MAX].
+   --  In this call the plugin may call host-provided methods marked [being-activated].
    --  Once activated the latency and port configuration must remain constant, until deactivation.
    --  Returns true on success.
    --  [main-thread & !active]
@@ -161,7 +162,7 @@ package CfA.Plugins is
 
    type Get_Extension_Function is access
      function (P  : CLAP_Plugin_Access;
-               ID : Chars_Ptr)
+               ID : CLAP_Chars_Ptr)
                return Void_Ptr
      with Convention => C;
    --  Query an extension.

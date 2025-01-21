@@ -28,7 +28,7 @@ package CfA.Extensions.Note_Names is
 
    use type Interfaces.C.size_t;
 
-   CLAP_Ext_Note_Name : constant Chars_Ptr
+   CLAP_Ext_Note_Name : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.note-name");
 
    type CLAP_Note_Name is

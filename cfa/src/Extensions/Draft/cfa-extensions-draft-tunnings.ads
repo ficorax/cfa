@@ -29,7 +29,7 @@ package CfA.Extensions.Draft.Tunnings is
 
    use type Interfaces.C.size_t;
 
-   Clap_Ext_Tuning : constant Chars_Ptr
+   Clap_Ext_Tuning : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.tuning.draft/2");
 
    --  Use CLAP_Host_Event_Registry.Query (Host, CLAP_Ext_Tuning, Space_ID) to

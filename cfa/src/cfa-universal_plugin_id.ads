@@ -29,11 +29,11 @@ package CfA.Universal_Plugin_ID is
    --  name of the abi and the representation of the ID.
    type CLAP_Universal_Plugin_ID is
       record
-         ABI : Chars_Ptr;
+         ABI : CLAP_Chars_Ptr;
          --  // The plugin ABI name, in lowercase and null-terminated.
          --  // eg: "clap", "vst3", "vst2", "au", ...
 
-         ID  : Chars_Ptr;
+         ID  : CLAP_Chars_Ptr;
          --  // The plugin ID, null-terminated and formatted as follows:
          --  //
          --  // CLAP: use the plugin id

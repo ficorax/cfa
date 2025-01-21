@@ -149,7 +149,7 @@ package CfA.Extensions.Params is
 
    use Interfaces.C;
 
-   CLAP_Ext_Params : constant Chars_Ptr :=
+   CLAP_Ext_Params : constant CLAP_Chars_Ptr :=
                        Interfaces.C.Strings.New_String ("clap.params");
 
    type Param_Info_Flags_Index is
@@ -286,9 +286,9 @@ package CfA.Extensions.Params is
          --  the module path containing the param, eg:"oscillators/wt1"
          --  '/' will be used as a separator to show a tree like structure.
 
-         Min_Value : CLAP_Double := 0.0;     --  minimum plain value
-         Max_Value : CLAP_Double := 0.0;     --  maximum plain value
-         Default_Value : CLAP_Double := 0.0; --  default plain value
+         Min_Value : CLAP_Double := 0.0;     --  Minimum plain value. Must be finite
+         Max_Value : CLAP_Double := 0.0;     --  Maximum plain value. Must be finite
+         Default_Value : CLAP_Double := 0.0; --  Default plain value. must be in [min,max] range
       end record
      with Convention => C;
 
@@ -325,7 +325,7 @@ package CfA.Extensions.Params is
      function (Plugin              : Plugins.CLAP_Plugin_Access;
                Param_ID            : CLAP_ID;
                Value               : CLAP_Double;
-               Out_Buffer          : out Chars_Ptr;
+               Out_Buffer          : out CLAP_Chars_Ptr;
                Out_Buffer_Capacity : UInt32_t)
                return Bool
      with Convention => C;
@@ -336,7 +336,7 @@ package CfA.Extensions.Params is
    type Text_To_Value_Function is access
      function (Plugin           :        Plugins.CLAP_Plugin_Access;
                Param_ID         :        CLAP_ID;
-               Param_Value_Text :        Chars_Ptr;
+               Param_Value_Text :        CLAP_Chars_Ptr;
                Out_Value        : access CLAP_Double)
                return Bool
      with Convention => C;

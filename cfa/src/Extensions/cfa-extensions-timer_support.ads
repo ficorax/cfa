@@ -26,7 +26,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Timer_Support is
 
-   CLAP_Ext_Timer_Support : constant Chars_Ptr
+   CLAP_Ext_Timer_Support : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.timer-support");
 
    type On_Timer_Function is access

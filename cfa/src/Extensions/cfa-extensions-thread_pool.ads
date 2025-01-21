@@ -68,7 +68,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Thread_Pool is
 
-   CLAP_Ext_Thread_Pool : constant Chars_Ptr
+   CLAP_Ext_Thread_Pool : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.thread-pool");
 
    type Exec_Function is access

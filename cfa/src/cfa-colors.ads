@@ -34,4 +34,6 @@ package CfA.Colors is
 
    type CLAP_Color_Access is access all CLAP_Color;
 
+   CLAP_Color_Transparent : constant CLAP_Color := (0, 0, 0, 0);
+
 end CfA.Colors;

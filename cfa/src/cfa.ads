@@ -59,9 +59,9 @@ package CfA is
    type CLAP_Float is new Interfaces.C.C_float;
    type CLAP_Double is new Interfaces.C.double;
 
-   subtype Chars_Ptr is Interfaces.C.Strings.chars_ptr;
+   subtype CLAP_Chars_Ptr is Interfaces.C.Strings.chars_ptr;
 
-   Null_Ptr : constant Chars_Ptr := Interfaces.C.Strings.Null_Ptr;
+   CLAP_Null_Ptr : constant CLAP_Chars_Ptr := Interfaces.C.Strings.Null_Ptr;
 
    type CLAP_Fd_ID is new Interfaces.C.int;
 

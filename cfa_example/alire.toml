@@ -1,6 +1,6 @@
 name = "cfa_example"
 description = "CLAP for Ada examples (based on plugin-template.c)"
-version = "1.2.2"
+version = "1.2.3"
 
 authors = ["Marek Kuziel"]
 maintainers = ["Marek Kuziel <ficorax@pm.me>"]

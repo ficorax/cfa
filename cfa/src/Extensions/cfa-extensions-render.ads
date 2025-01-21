@@ -25,7 +25,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Render is
 
-   CLAP_Ext_Render : constant Chars_Ptr :=
+   CLAP_Ext_Render : constant CLAP_Chars_Ptr :=
                        Interfaces.C.Strings.New_String ("clap.render");
 
    type CLAP_Plugin_Render_Mode is

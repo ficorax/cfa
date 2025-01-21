@@ -73,7 +73,7 @@ with CfA.Hosts;
 
 package CfA.Extensions.Thread_Check is
 
-   CLAP_Ext_Thread_Check : constant Chars_Ptr
+   CLAP_Ext_Thread_Check : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.thread-check");
 
    --  This interface is useful to do runtime checks and make

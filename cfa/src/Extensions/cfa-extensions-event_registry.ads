@@ -27,12 +27,12 @@ package CfA.Extensions.Event_Registry is
 
    use Interfaces.C.Strings;
 
-   CLAP_Ext_Event_Registry : constant Chars_Ptr :=
+   CLAP_Ext_Event_Registry : constant CLAP_Chars_Ptr :=
                                New_String ("clap.event-registry");
 
    type Query_Function is access
      function (Host       : Hosts.CLAP_Host_Access;
-               Space_Name : Chars_Ptr;
+               Space_Name : CLAP_Chars_Ptr;
                Space_ID   : out UInt16_t)
                return Bool
      with Convention => C;

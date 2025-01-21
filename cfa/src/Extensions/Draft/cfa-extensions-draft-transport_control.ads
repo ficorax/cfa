@@ -31,7 +31,7 @@ with CfA.Hosts;
 
 package CfA.Extensions.Draft.Transport_Control is
 
-   CLAP_Ext_Transport_Control : constant Chars_Ptr
+   CLAP_Ext_Transport_Control : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.transport-control.draft/1");
 
    -------------------------------------------------------------------------------------------------

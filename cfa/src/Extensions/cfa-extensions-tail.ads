@@ -26,7 +26,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Tail is
 
-   CLAP_Ext_Tail : constant Chars_Ptr :=
+   CLAP_Ext_Tail : constant CLAP_Chars_Ptr :=
                      Interfaces.C.Strings.New_String ("clap.tail");
 
    -------------------------------------------------------------------------------------------------

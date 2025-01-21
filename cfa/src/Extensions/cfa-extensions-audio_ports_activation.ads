@@ -49,10 +49,10 @@ with CfA.Plugins;
 
 package CfA.Extensions.Audio_Ports_Activation is
 
-   CLAP_Ext_Audio_Ports_Activation : constant Chars_Ptr
+   CLAP_Ext_Audio_Ports_Activation : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.audio-ports-activation/2");
 
-   CLAP_Ext_Audio_Ports_Activation_Compat : constant Chars_Ptr
+   CLAP_Ext_Audio_Ports_Activation_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.audio-ports-activation/draft-2");
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.

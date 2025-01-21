@@ -28,10 +28,10 @@ with CfA.Plugins;
 
 package CfA.Extensions.Configurable_Audio_Ports is
 
-   CLAP_Ext_Configurable_Audio_Ports : constant Chars_Ptr
+   CLAP_Ext_Configurable_Audio_Ports : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.configurable-audio-ports/1");
 
-   CLAP_Ext_Configurable_Audio_Ports_Compat : constant Chars_Ptr
+   CLAP_Ext_Configurable_Audio_Ports_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.configurable-audio-ports.draft1");
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.
@@ -45,7 +45,7 @@ package CfA.Extensions.Configurable_Audio_Ports is
          Channel_Count : UInt32_t := 0;
          --  The requested number of channels.
 
-         Port_Type     : Chars_Ptr := Null_Ptr;
+         Port_Type     : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  The port type, see audio-ports.h, clap_audio_port_info.port_type for interpretation.
 
          Port_Details  : Void_Ptr := Null_Void_Ptr;

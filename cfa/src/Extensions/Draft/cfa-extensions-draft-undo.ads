@@ -66,13 +66,13 @@ with CfA.Plugins;
 
 package CfA.Extensions.Draft.Undo is
 
-   CLAP_Ext_Undo : constant Chars_Ptr
+   CLAP_Ext_Undo : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.undo/4");
 
-   CLAP_Ext_Undo_Context : constant Chars_Ptr
+   CLAP_Ext_Undo_Context : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.undo_context/4");
 
-   CLAP_Ext_Undo_Delta : constant Chars_Ptr
+   CLAP_Ext_Undo_Delta : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.undo_delta/4");
 
    type CLAP_Undo_Delta_Properties is
@@ -165,11 +165,11 @@ package CfA.Extensions.Draft.Undo is
 
    type Set_Undo_Name_Function is access
      procedure (Plugin : Plugins.CLAP_Plugin_Access;
-                Name   : Chars_Ptr)
+                Name   : CLAP_Chars_Ptr)
      with Convention => C;
    type Set_Redo_Name_Function is access
      procedure (Plugin : Plugins.CLAP_Plugin_Access;
-                Name   : Chars_Ptr)
+                Name   : CLAP_Chars_Ptr)
      with Convention => C;
    --  Sets the name of the next undo or redo step.
    --  name: null terminated string.
@@ -205,7 +205,7 @@ package CfA.Extensions.Draft.Undo is
 
    type Change_Made_Function is access
      procedure (Host           : Hosts.CLAP_Host_Access;
-                Name           : Chars_Ptr;
+                Name           : CLAP_Chars_Ptr;
                 Delta_Undo     : Void_Ptr;
                 Delta_Size     : Interfaces.C.size_t;
                 Delta_Can_Undo : Bool)

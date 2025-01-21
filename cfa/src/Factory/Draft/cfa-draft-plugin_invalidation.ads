@@ -23,7 +23,7 @@
 
 package CfA.Draft.Plugin_Invalidation is
 
-   CLAP_Plugin_Invalidation_Factory_ID : constant Chars_Ptr :=
+   CLAP_Plugin_Invalidation_Factory_ID : constant CLAP_Chars_Ptr :=
      Interfaces.C.Strings.New_String
        ("clap.plugin-invalidation-factory/draft0");
    --  Use it to retrieve const clap_plugin_invalidation_factory_t* from
@@ -31,10 +31,10 @@ package CfA.Draft.Plugin_Invalidation is
 
    type CLAP_Plugin_Invalidation_Source is
       record
-         Directory      : Chars_Ptr := Null_Ptr;
+         Directory      : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  Directory containing the file(s) to scan, must be absolute
 
-         Filename_Glob  : Chars_Ptr := Null_Ptr;
+         Filename_Glob  : CLAP_Chars_Ptr := CLAP_Null_Ptr;
          --  globing pattern, in the form *.dll
 
          Recursive_Scan : Bool     := False;

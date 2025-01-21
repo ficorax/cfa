@@ -30,16 +30,16 @@ with CfA.Plugins;
 
 package CfA.Extensions.Ambisonics is
 
-   CLAP_Ext_Ambisonic : constant Chars_Ptr
+   CLAP_Ext_Ambisonic : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.ambisonic/3");
    --  This extension can be used to specify the channel mapping used by the plugin.
 
-   CLAP_Ext_Ambisonic_Compat : constant Chars_Ptr
+   CLAP_Ext_Ambisonic_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.ambisonic.draft/3");
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.
 
-   CLAP_Port_Ambisonic : constant Chars_Ptr :=
+   CLAP_Port_Ambisonic : constant CLAP_Chars_Ptr :=
                            Interfaces.C.Strings.New_String ("ambisonic");
 
    type CLAP_Ambisonic_Channel_Ordering is
@@ -86,9 +86,6 @@ package CfA.Extensions.Ambisonics is
                Config     : CLAP_Ambisonic_Config_Access) return Bool
      with Convention => C;
    --  Returns true on success
-   --
-   --  Config_Id: the configuration id, see Clap_Plugin_Audio_Ports_Config.
-   --  If config_id is Clap_Invalid_ID, then this function queries the current port info.
    --  [main-thread]
 
    type CLAP_Plugin_Ambisonic is

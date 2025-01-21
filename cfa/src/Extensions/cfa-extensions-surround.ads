@@ -49,10 +49,10 @@ with CfA.Plugins;
 
 package CfA.Extensions.Surround is
 
-   CLAP_Ext_Surround : constant Chars_Ptr
+   CLAP_Ext_Surround : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.surround.draft/2");
 
-   CLAP_Port_Surround : constant Chars_Ptr :=
+   CLAP_Port_Surround : constant CLAP_Chars_Ptr :=
                           Interfaces.C.Strings.New_String ("surround");
 
    type CLAP_Surround_ID is

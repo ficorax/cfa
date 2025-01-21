@@ -66,12 +66,12 @@ with CfA.Version;
 
 package CfA.Preset_Discovery is
 
-   CLAP_Preset_Discovery_Factory_ID : constant Chars_Ptr
+   CLAP_Preset_Discovery_Factory_ID : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.preset-discovery-factory/2");
    --  Use it to retrieve const CLAP_Preset_Discovery_Factory from
    --  CLAP_Plugin_Entry.Get_Factory
 
-   CLAP_Preset_Discovery_Factory_ID_Compat : constant Chars_Ptr
+   CLAP_Preset_Discovery_Factory_ID_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.preset-discovery-factory/draft-2");
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.
@@ -128,7 +128,7 @@ package CfA.Preset_Discovery is
    type On_Error_Function is access
      procedure (Receiver      : CLAP_Preset_Discovery_Metadata_Receiver_Access;
                 Os_Error      : Int32_t;
-                Error_Message : Chars_Ptr)
+                Error_Message : CLAP_Chars_Ptr)
      with Convention => C;
    --  If there is an error reading metadata from a file this should be called with an error
    --  message.
@@ -137,8 +137,8 @@ package CfA.Preset_Discovery is
 
    type Begin_Preset_Function is access
      function (Receiver : CLAP_Preset_Discovery_Metadata_Receiver_Access;
-               Name     : Chars_Ptr;
-               Load_Key : Chars_Ptr)
+               Name     : CLAP_Chars_Ptr;
+               Load_Key : CLAP_Chars_Ptr)
                return Bool
      with Convention => C;
    --  This must be called for every preset in the file and before any preset metadata is
@@ -268,7 +268,7 @@ package CfA.Preset_Discovery is
          Kind  : CLAP_Preset_Discovery_Location_Kind;
          --  See Clap_Preset_Discovery_Location_Kind
 
-         Location : Chars_Ptr;
+         Location : CLAP_Chars_Ptr;
          --  Actual location in which to crawl presets.
          --  For FILE kind, the location can be either a path to a directory or a file.
          --  For PLUGIN kind, the location must be null.

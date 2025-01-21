@@ -44,7 +44,7 @@ with CfA.Streams;
 
 package CfA.Extensions.State_Context is
 
-   CLAP_Ext_State_Context : constant Chars_Ptr
+   CLAP_Ext_State_Context : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.state-context.draft/1");
 
    type CLAP_Plugin_State_Context_Type is

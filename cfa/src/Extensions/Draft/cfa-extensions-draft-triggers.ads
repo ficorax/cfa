@@ -52,7 +52,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Draft.Triggers is
 
-   CLAP_Ext_Triggers : constant Chars_Ptr
+   CLAP_Ext_Triggers : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.triggers/1");
 
    type CLAP_Trigger_Info_Flag_Index is

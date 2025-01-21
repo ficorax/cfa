@@ -80,7 +80,7 @@ with CfA.Version;
 package CfA.Plugin_Entry is
 
    type Init_Function is access
-     function (Plugin_Path : Chars_Ptr) return Bool
+     function (Plugin_Path : CLAP_Chars_Ptr) return Bool
    with Convention => C;
    --  Initializes the DSO.
    --
@@ -139,7 +139,7 @@ package CfA.Plugin_Entry is
    --  DSO, including (but not limited to) Deinit.
 
    type Get_Factory_Function is access
-     function (Factory_ID : Chars_Ptr)
+     function (Factory_ID : CLAP_Chars_Ptr)
                return CfA.Plugin_Factory.CLAP_Plugin_Factory_Access
    with Convention => C;
    -- Get the pointer to a factory. See Factory/cfa-Plugin_Factory.ads for an example.

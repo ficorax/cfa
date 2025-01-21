@@ -26,7 +26,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Latency is
 
-   CLAP_Ext_Latency : constant Chars_Ptr :=
+   CLAP_Ext_Latency : constant CLAP_Chars_Ptr :=
                         Interfaces.C.Strings.New_String ("clap.latency");
 
    --  The audio ports scan has to be done while the plugin is deactivated.

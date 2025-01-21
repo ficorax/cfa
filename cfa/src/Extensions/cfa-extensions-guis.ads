@@ -34,6 +34,9 @@
 --  integrated.
 --  Floating window are sometimes the only option due to technical limitations.
 --
+--  The Embedding protocol is by far the most common, supported by all hosts to date,
+--  and a plugin author should support at least that case.
+--
 --  Showing the GUI works as follow:
 --   1. CLAP_Plugin_GUI.Is_API_Supported, check what can work
 --   2. CLAP_Plugin_GUI.Create, allocates GUI resources
@@ -70,7 +73,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.GUIs is
 
-   CLAP_Ext_GUI : constant Chars_Ptr :=
+   CLAP_Ext_GUI : constant CLAP_Chars_Ptr :=
                     Interfaces.C.Strings.New_String ("clap.GUI");
 
    --  If your windowing API is not listed here, please open an issue and we'll
@@ -80,22 +83,22 @@ package CfA.Extensions.GUIs is
    --  uses physical size
    --  embed using https:--docs.microsoft.com/en-us/windows/win32/api/winuser/
    --                      nf-winuser-setparent
-   CLAP_Window_API_Win32 : constant Chars_Ptr :=
+   CLAP_Window_API_Win32 : constant CLAP_Chars_Ptr :=
                              Interfaces.C.Strings.New_String ("win32");
 
    --  uses logical size, don't CALL Clap_Plugin_GUI.Set_Scale
-   CLAP_Window_API_Cocoa : constant Chars_Ptr :=
+   CLAP_Window_API_Cocoa : constant CLAP_Chars_Ptr :=
                              Interfaces.C.Strings.New_String ("cocoa");
 
    --  uses physical size
    --  embed using https:--specifications.freedesktop.org/xembed-spec/
    --                      xembed-spec-latest.html
-   CLAP_Window_API_X11 : constant Chars_Ptr :=
+   CLAP_Window_API_X11 : constant CLAP_Chars_Ptr :=
                            Interfaces.C.Strings.New_String ("x11");
 
    --  uses physical size
    --  embed is currently not supported, use floating windows
-   CLAP_Window_API_Wayland : constant Chars_Ptr :=
+   CLAP_Window_API_Wayland : constant CLAP_Chars_Ptr :=
                                Interfaces.C.Strings.New_String ("wayland");
 
    subtype CLAP_Hwnd   is Void_Ptr;
@@ -128,7 +131,7 @@ package CfA.Extensions.GUIs is
 
    type CLAP_Window is
       record
-         API    : Chars_Ptr := Null_Ptr; --  one of CLAP_Window_API_XXX
+         API    : CLAP_Chars_Ptr := CLAP_Null_Ptr; --  one of CLAP_Window_API_XXX
          Handle : Window_API := (others => <>);
       end record
    with Convention => C;
@@ -142,7 +145,10 @@ package CfA.Extensions.GUIs is
          Can_Resize_Horizontally : Bool := False;
          Can_Resize_Vertically   : Bool := False;
 
-         --  only if can resize horizontally and vertically
+         --  if both horizontal and vertical resize are available, do we preserve the
+         --  aspect ratio, and if so, what is the width x height aspect ratio to preserve.
+         --  These flags are unused if can_resize_horizontally or vertically are false,
+         --  and ratios are unused if preserve is false.
          Preserve_Aspect_Ratio : Bool := False;
          Aspect_Ratio_Width    : UInt32_t := 0;
          Aspect_Ratio_Height   : UInt32_t := 0;
@@ -154,16 +160,17 @@ package CfA.Extensions.GUIs is
 
    type Is_API_Supported_Function is access
      function (Plugin      : Plugins.CLAP_Plugin_Access;
-               API         : Chars_Ptr;
+               API         : CLAP_Chars_Ptr;
                Is_Floating : Bool)
                return Bool
      with Convention => C;
-   --  Returns True if the requested GUI API is supported
+   --  Returns True if the requested GUI API is supported, either in floating (plugin-created)
+   --  or non-floating (embedded) mode.
    --  [main-thread]
 
    type Get_Preferred_API_Function is access
      function (Plugin      : Plugins.CLAP_Plugin_Access;
-               API         : out Chars_Ptr;
+               API         : out CLAP_Chars_Ptr;
                Is_Floating : out Bool)
                return  Bool
      with Convention => C;
@@ -177,7 +184,7 @@ package CfA.Extensions.GUIs is
 
    type Create_Function is access
      function (Plugin      : Plugins.CLAP_Plugin_Access;
-               API         : Chars_Ptr;
+               API         : CLAP_Chars_Ptr;
                Is_Floating : Bool)
                return Bool
      with Convention => C;
@@ -282,7 +289,7 @@ package CfA.Extensions.GUIs is
 
    type Suggest_Title_Function is access
      procedure (Plugin : Plugins.CLAP_Plugin_Access;
-                Title  : Chars_Ptr)
+                Title  : CLAP_Chars_Ptr)
      with Convention => C;
    --  Suggests a window title. Only for floating windows.
    --  [main-thread & floating]

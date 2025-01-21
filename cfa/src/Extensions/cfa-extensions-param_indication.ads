@@ -37,12 +37,12 @@ with CfA.Plugins;
 
 package CfA.Extensions.Param_Indication is
 
-   CLAP_Ext_Param_Indication : constant Chars_Ptr
+   CLAP_Ext_Param_Indication : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.param-indication/4");
 
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.
-   CLAP_Ext_Param_Indication_Compat : constant Chars_Ptr
+   CLAP_Ext_Param_Indication_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.param-indication.draft/4");
 
    type CLAP_Param_Indication_Automation is

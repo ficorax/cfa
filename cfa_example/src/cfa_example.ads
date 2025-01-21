@@ -6,14 +6,14 @@ with CfA.Version; use CfA.Version;
 
 package CfA_Example is
 
-   function Entry_Init (Path : Chars_Ptr) return Bool
+   function Entry_Init (Path : CLAP_Chars_Ptr) return Bool
      with Export => True, Convention => C;
 
    procedure Entry_Deinit
      with Export => True, Convention => C;
 
    function Entry_Get_Factory
-     (Factory_ID : Chars_Ptr)
+     (Factory_ID : CLAP_Chars_Ptr)
       return CLAP_Plugin_Factory_Access
      with Export => True, Convention => C;
 

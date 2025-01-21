@@ -57,10 +57,10 @@ package CfA.Extensions.Remote_Controls is
 
    use type Interfaces.C.size_t;
 
-   CLAP_Ext_Remote_Controls : constant Chars_Ptr
+   CLAP_Ext_Remote_Controls : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.remote-controls/2");
 
-   CLAP_Ext_Remote_Controls_Compat : constant Chars_Ptr
+   CLAP_Ext_Remote_Controls_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.remote-controls.draft/2");
    --  The latest draft is 100% compatible
    --  This compat ID may be removed in 2026.

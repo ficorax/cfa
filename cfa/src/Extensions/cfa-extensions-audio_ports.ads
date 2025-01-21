@@ -43,9 +43,9 @@ package CfA.Extensions.Audio_Ports is
    use Interfaces.C;
    use Interfaces.C.Strings;
 
-   CLAP_Ext_Audio_Ports : constant Chars_Ptr := New_String ("clap.audio-ports");
-   CLAP_Port_Mono       : constant Chars_Ptr := New_String ("mono");
-   CLAP_Port_Stereo     : constant Chars_Ptr := New_String ("stereo");
+   CLAP_Ext_Audio_Ports : constant CLAP_Chars_Ptr := New_String ("clap.audio-ports");
+   CLAP_Port_Mono       : constant CLAP_Chars_Ptr := New_String ("mono");
+   CLAP_Port_Stereo     : constant CLAP_Chars_Ptr := New_String ("stereo");
 
    type Audio_Port_Type_Index is
      (
@@ -85,7 +85,7 @@ package CfA.Extensions.Audio_Ports is
 
          Channel_Count : UInt32_t             := 0;
 
-         Port_Type     : Chars_Ptr             := Null_Ptr;
+         Port_Type     : CLAP_Chars_Ptr             := CLAP_Null_Ptr;
          --  If null or empty then it is unspecified (arbitrary audio).
          --  This filed can be compared against:
          --  - CLAP_Port_Mono

@@ -34,10 +34,10 @@ package CfA.Extensions.Track_Infos is
 
    use type Interfaces.C.size_t;
 
-   CLAP_Ext_Track_Info : constant Chars_Ptr
+   CLAP_Ext_Track_Info : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.track-info/1");
 
-   CLAP_Ext_Track_Info_Compat : constant Chars_Ptr
+   CLAP_Ext_Track_Info_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.track-info.draft/1");
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.
@@ -79,7 +79,7 @@ package CfA.Extensions.Track_Infos is
          --  see Extensions.Audio_Ports, type CLAP_Audio_Port_Info to learn how to use channel
          --  count and port type
 
-         Audio_Port_Type       : Chars_Ptr := Null_Ptr;
+         Audio_Port_Type       : CLAP_Chars_Ptr := CLAP_Null_Ptr;
       end record
      with Convention => C;
 
@@ -107,7 +107,7 @@ package CfA.Extensions.Track_Infos is
 
    type Get_Function is access
      function (Host : Hosts.CLAP_Host_Access;
-               Info : out CLAP_Track_Info)
+               Info : CLAP_Track_Info_Access)
                return Bool
      with Convention => C;
    --  Get info about the track the plugin belongs to.

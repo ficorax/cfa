@@ -41,7 +41,7 @@ with CfA.Streams;
 
 package CfA.Extensions.State is
 
-   CLAP_Ext_State : constant Chars_Ptr :=
+   CLAP_Ext_State : constant CLAP_Chars_Ptr :=
                       Interfaces.C.Strings.New_String ("clap.state");
 
    type Save_Function is access

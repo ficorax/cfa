@@ -8,7 +8,7 @@ package body CfA_Example is
    --  Entry_Init  --
    ------------------
 
-   function Entry_Init (Path : CfA.Chars_Ptr) return Bool
+   function Entry_Init (Path : CfA.CLAP_Chars_Ptr) return Bool
    is
       pragma Unreferenced (Path);
    begin
@@ -31,7 +31,7 @@ package body CfA_Example is
    -------------------------
 
    function Entry_Get_Factory
-     (Factory_ID : CfA.Chars_Ptr)
+     (Factory_ID : CfA.CLAP_Chars_Ptr)
       return CLAP_Plugin_Factory_Access
    is
    begin

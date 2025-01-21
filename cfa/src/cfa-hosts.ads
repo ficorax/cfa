@@ -30,7 +30,7 @@ package CfA.Hosts is
 
    type Get_Extension_Function is access
      function (Host         : CLAP_Host_Access;
-               Extension_ID : Chars_Ptr)
+               Extension_ID : CLAP_Chars_Ptr)
                return Void_Ptr
    with Convention => C;
    --  Query an extension.
@@ -42,7 +42,7 @@ package CfA.Hosts is
    type Request_Restart_Function is access
      procedure (Host : CLAP_Host_Access)
    with Convention => C;
-   --  Request the host to deactivate and then reactivate the plugin.
+   --  host to deactivate and then reactivate the plugin.
    --  The operation may be delayed by the host.
    --  [thread-safe]
 
@@ -57,6 +57,13 @@ package CfA.Hosts is
      procedure (Host : CLAP_Host_Access)
    with Convention => C;
    --  Request the host to schedule a call to Plugin.On_Main_Thread (Plugin) on the main thread.
+   --  This callback should be called as soon as practicable, usually in the host application's next
+   --  available main thread time slice. Typically callbacks occur within 33ms / 30hz.
+   --  Despite this guidance, plugins should not make assumptions about the exactness of timing for
+   --  a main thread callback, but hosts should endeavour to be prompt. For example, in high load
+   --  situations the environment may starve the gui/main thread in favor of audio processing,
+   --  leading to substantially longer latencies for the callback than the indicative times given
+   --  here.
    --  [thread-safe]
 
    type CLAP_Host is
@@ -67,10 +74,16 @@ package CfA.Hosts is
          --  reserved pointer for the host
 
          --  name and version are mandatory.
-         Name             : Chars_Ptr                  := Null_Ptr;  -- eg: "Bitwig Studio"
-         Vendor           : Chars_Ptr                  := Null_Ptr;  -- eg: "Bitwig GmbH"
-         URL              : Chars_Ptr                  := Null_Ptr;  -- eg: "https://bitwig.com"
-         Host_Version     : Chars_Ptr                  := Null_Ptr;
+         Name             : CLAP_Chars_Ptr                  := CLAP_Null_Ptr;
+         -- eg: "Bitwig Studio"
+
+         Vendor           : CLAP_Chars_Ptr                  := CLAP_Null_Ptr;
+         -- eg: "Bitwig GmbH"
+
+         URL              : CLAP_Chars_Ptr                  := CLAP_Null_Ptr;
+         -- eg: "https://bitwig.com"
+
+         Host_Version     : CLAP_Chars_Ptr                  := CLAP_Null_Ptr;
          --  eg           : "4.3", see CfA.Plugins for advice on how to format the version
 
          Get_Extension    : Get_Extension_Function    := null;

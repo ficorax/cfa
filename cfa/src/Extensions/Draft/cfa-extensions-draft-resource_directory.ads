@@ -61,14 +61,14 @@ with CfA.Plugins;
 
 package CfA.Extensions.Draft.Resource_Directory is
 
-   CLAP_Ext_Resource_Directory : constant Chars_Ptr
+   CLAP_Ext_Resource_Directory : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.resource-directory.draft/1");
 
    -------------------------------------------------------------------------------------------------
 
    type Set_Directory_Function is access
      procedure (Plugin    : Plugins.CLAP_Plugin_Access;
-                Path      : Chars_Ptr;
+                Path      : CLAP_Chars_Ptr;
                 Is_Shared : Bool)
      with Convention => C;
    --  Sets the directory in which the plugin can save its resources.

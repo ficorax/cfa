@@ -30,12 +30,12 @@ with CfA.Plugins;
 
 package CfA.Extensions.Context_Menu is
 
-   CLAP_Ext_Context_Menu : constant Chars_Ptr
+   CLAP_Ext_Context_Menu : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.context-menu/1");
 
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.
-   CLAP_Ext_Context_Menu_Compat : constant Chars_Ptr
+   CLAP_Ext_Context_Menu_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.context-menu.draft/0");
 
    --  There can be different target kind for a context menu

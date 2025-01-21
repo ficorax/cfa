@@ -25,7 +25,7 @@ with CfA.Hosts;
 
 package CfA.Extensions.Log is
 
-   CLAP_Ext_Log : constant Chars_Ptr :=
+   CLAP_Ext_Log : constant CLAP_Chars_Ptr :=
                     Interfaces.C.Strings.New_String ("clap.log");
 
    type CLAP_Log_Severity is
@@ -45,7 +45,7 @@ package CfA.Extensions.Log is
    type Log_Function is access
      procedure (Host     : Hosts.CLAP_Host_Access;
                 Severity : CLAP_Log_Severity;
-                Msg      : Chars_Ptr)
+                Msg      : CLAP_Chars_Ptr)
      with Convention => C;
    --  Log a message through the host.
    --  [thread-safe]

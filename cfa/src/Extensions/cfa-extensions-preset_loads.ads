@@ -27,10 +27,10 @@ with CfA.Preset_Discovery;
 
 package CfA.Extensions.Preset_Loads is
 
-   CLAP_Ext_Preset_Load : constant Chars_Ptr
+   CLAP_Ext_Preset_Load : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.preset-load/2");
 
-   CLAP_Ext_Preset_Load_Compat : constant Chars_Ptr
+   CLAP_Ext_Preset_Load_Compat : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.preset-load.draft/2");
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.
@@ -38,8 +38,8 @@ package CfA.Extensions.Preset_Loads is
    type From_Location_Function is access
      function (Plugin        : Plugins.CLAP_Plugin_Access;
                Location_Kind : Preset_Discovery.CLAP_Preset_Discovery_Location_Kind;
-               Location      : Chars_Ptr;
-               Load_Key      : Chars_Ptr) return Bool
+               Location      : CLAP_Chars_Ptr;
+               Load_Key      : CLAP_Chars_Ptr) return Bool
      with Convention => C;
    --  Loads a preset in the plugin native preset file format from a URI. eg:
    --  - "file:///home/abique/.u-he/Diva/Presets/Diva/HS Bass Nine.h2p", load_key: null
@@ -63,9 +63,9 @@ package CfA.Extensions.Preset_Loads is
    type On_Error_Function is access
      procedure (Host          : Hosts.CLAP_Host_Access;
                 Location_Kind : Preset_Discovery.CLAP_Preset_Discovery_Location_Kind;
-                Location      : Chars_Ptr;
+                Location      : CLAP_Chars_Ptr;
                 OS_Error      : Int32_t;
-                Msg           : Chars_Ptr)
+                Msg           : CLAP_Chars_Ptr)
      with Convention => C;
    --  Called if CLAP_Plugin_Preset_Load.Load failed.
    --  OS_Error: the operating system error, if applicable. If not applicable set it to a non-error
@@ -76,8 +76,8 @@ package CfA.Extensions.Preset_Loads is
    type Loaded_Function is access
      procedure (Host          : Hosts.CLAP_Host_Access;
                 Location_Kind : Preset_Discovery.CLAP_Preset_Discovery_Location_Kind;
-                Location      : Chars_Ptr;
-                Load_Key      : Chars_Ptr)
+                Location      : CLAP_Chars_Ptr;
+                Load_Key      : CLAP_Chars_Ptr)
      with Convention => C;
    --  Informs the host that the following preset has been loaded.
    --  This contributes to keep in sync the host preset browser and plugin preset browser.

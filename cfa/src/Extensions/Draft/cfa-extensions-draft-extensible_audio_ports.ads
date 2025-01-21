@@ -28,15 +28,15 @@ with CfA.Plugins;
 
 package CfA.Extensions.Draft.Extensible_Audio_Ports is
 
-   CLAP_Ext_Extensible_Audio_Ports : constant Chars_Ptr
+   CLAP_Ext_Extensible_Audio_Ports : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.extensible-audio-ports/1");
 
    type Add_Port_Function is access
      function (Plugin        : Plugins.CLAP_Plugin_Access;
                Is_Input      : Bool;
                Channel_Count : UInt32_t;
-               Port_Type     : Chars_Ptr;
-               Port_Details  : Chars_Ptr) return Bool
+               Port_Type     : CLAP_Chars_Ptr;
+               Port_Details  : CLAP_Chars_Ptr) return Bool
      with Convention => C;
    --  Asks the plugin to add a new port (at the end of the list), with the following settings.
    --  port_type: see clap_audio_port_info.port_type for interpretation.

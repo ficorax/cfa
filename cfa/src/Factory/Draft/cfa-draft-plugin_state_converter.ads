@@ -34,11 +34,11 @@ package CfA.Draft.Plugin_State_Converter is
          Src_Plugin_Id : CfA.Universal_Plugin_ID.CLAP_Universal_Plugin_ID;
          Dst_Plugin_Id : CfA.Universal_Plugin_ID.CLAP_Universal_Plugin_ID;
 
-         Id            : Chars_Ptr;    --  eg: "com.u-he.diva-converter", mandatory
-         Name          : Chars_Ptr;    --  eg: "Diva Converter", mandatory
-         Vendor        : Chars_Ptr;    --  eg: "u-he"
-         Version_Char  : Chars_Ptr;    --  eg: 1.1.5
-         Description   : Chars_Ptr;    --  eg: "Official state converter for u-he Diva."
+         Id            : CLAP_Chars_Ptr;    --  eg: "com.u-he.diva-converter", mandatory
+         Name          : CLAP_Chars_Ptr;    --  eg: "Diva Converter", mandatory
+         Vendor        : CLAP_Chars_Ptr;    --  eg: "u-he"
+         Version_Char  : CLAP_Chars_Ptr;    --  eg: 1.1.5
+         Description   : CLAP_Chars_Ptr;    --  eg: "Official state converter for u-he Diva."
       end record
      with Convention => C;
 
@@ -66,7 +66,7 @@ package CfA.Draft.Plugin_State_Converter is
      function (Converter         : CLAP_Plugin_State_Converter_Access;
                Src               : CfA.Streams.CLAP_Input_Stream_Access;
                Dst               : CfA.Streams.CLAP_Output_Stream_Access;
-               Error_Buffer      : Chars_Ptr;
+               Error_Buffer      : CLAP_Chars_Ptr;
                Error_Buffer_Size : Interfaces.C.size_t) return Bool
    with Convention => C;
    --  Converts the input state to a state usable by the destination plugin.
@@ -113,7 +113,7 @@ package CfA.Draft.Plugin_State_Converter is
 
    ----------------------------------------------------------------------------
 
-   CLAP_Plugin_State_Converter_Factory_Id : constant Chars_Ptr
+   CLAP_Plugin_State_Converter_Factory_Id : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.plugin-state-converter-factory/1");
    --  Factory identifier
 
@@ -139,7 +139,7 @@ package CfA.Draft.Plugin_State_Converter is
 
    type Create_Function is access
      function (Factory      : CLAP_Plugin_State_Converter_Factory_Access;
-               Converter_ID : Chars_Ptr) return CLAP_Plugin_State_Converter_Access
+               Converter_ID : CLAP_Chars_Ptr) return CLAP_Plugin_State_Converter_Access
      with Convention => C;
    --  Create a plugin state converter by its converter_id.
    --  The returned pointer must be freed by calling converter->destroy(converter);

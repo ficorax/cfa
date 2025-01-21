@@ -38,7 +38,7 @@ package CfA.Extensions.Note_Ports is
 
    use type Interfaces.C.size_t;
 
-   CLAP_Ext_Note_Ports : constant Chars_Ptr :=
+   CLAP_Ext_Note_Ports : constant CLAP_Chars_Ptr :=
                            Interfaces.C.Strings.New_String ("clap.note-ports");
 
    type Note_Dialect_Index is

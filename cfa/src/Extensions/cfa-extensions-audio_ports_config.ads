@@ -56,13 +56,13 @@ package CfA.Extensions.Audio_Ports_Config is
    use Interfaces.C;
    use Interfaces.C.Strings;
 
-   CLAP_Ext_Audio_Ports_Config : constant Chars_Ptr :=
+   CLAP_Ext_Audio_Ports_Config : constant CLAP_Chars_Ptr :=
                                    New_String ("clap.audio-ports-config");
 
-   CLAP_Ext_Audio_Ports_Config_Info : constant Chars_Ptr :=
+   CLAP_Ext_Audio_Ports_Config_Info : constant CLAP_Chars_Ptr :=
                                    New_String ("clap.audio-ports-config_info/1");
 
-   CLAP_Ext_Audio_Ports_Config_Info_Compat : constant Chars_Ptr :=
+   CLAP_Ext_Audio_Ports_Config_Info_Compat : constant CLAP_Chars_Ptr :=
                                    New_String ("clap.audio-ports-config_info/draft-0");
    --  The latest draft is 100% compatible.
    --  This compat ID may be removed in 2026.
@@ -79,12 +79,12 @@ package CfA.Extensions.Audio_Ports_Config is
          --  main input info
          Has_Main_Input            : Bool     := False;
          Main_Input_Channel_Count  : UInt32_t := 0;
-         Main_Input_Port_Type      : Chars_Ptr := Null_Ptr;
+         Main_Input_Port_Type      : CLAP_Chars_Ptr := CLAP_Null_Ptr;
 
          --  main output info
          Has_Main_Output           : Bool     := False;
          Main_Output_Channel_Count : UInt32_t := 0;
-         Main_Output_Port_Type     : Chars_Ptr := Null_Ptr;
+         Main_Output_Port_Type     : CLAP_Chars_Ptr := CLAP_Null_Ptr;
       end record
      with Convention => C;
 

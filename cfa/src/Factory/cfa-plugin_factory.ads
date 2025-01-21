@@ -26,7 +26,7 @@ with CfA.Plugins;
 
 package CfA.Plugin_Factory is
 
-   CLAP_Plugin_Factory_ID : constant Chars_Ptr
+   CLAP_Plugin_Factory_ID : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.plugin-factory");
    --  Use it to retrieve Clap_Plugin_Factory from
    --  Clap_Plugin_Entry.Get_Factory
@@ -60,7 +60,7 @@ package CfA.Plugin_Factory is
    type Create_Plugin_Function is access
      function (Factory   : CLAP_Plugin_Factory_Access;
                Host      : CfA.Hosts.CLAP_Host_Access;
-               Plugin_ID : Chars_Ptr)
+               Plugin_ID : CLAP_Chars_Ptr)
                return CfA.Plugins.CLAP_Plugin_Access
      with Convention => C;
    --  Create a clap_plugin by its Plugin_ID.

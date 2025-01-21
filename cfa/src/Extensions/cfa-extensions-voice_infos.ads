@@ -34,7 +34,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.Voice_Infos is
 
-   CLAP_Ext_Voice_Info : constant Chars_Ptr
+   CLAP_Ext_Voice_Info : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.voice-info");
 
    type CLAP_Voice_Info_Flags_Index is

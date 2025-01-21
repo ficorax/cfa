@@ -31,7 +31,7 @@ with CfA.Plugins;
 
 package CfA.Extensions.POSIX_Fd_Support is
 
-   CLAP_Ext_Posix_Fd_Support : constant Chars_Ptr
+   CLAP_Ext_Posix_Fd_Support : constant CLAP_Chars_Ptr
      := Interfaces.C.Strings.New_String ("clap.posix-fd-support");
 
    --  IO events flags, they can be used to form a mask which describes:
