@@ -64,6 +64,7 @@ package CfA.Extensions.Preset_Loads is
      procedure (Host          : Hosts.CLAP_Host_Access;
                 Location_Kind : Preset_Discovery.CLAP_Preset_Discovery_Location_Kind;
                 Location      : CLAP_Chars_Ptr;
+                Load_Key      : CLAP_Chars_Ptr;
                 OS_Error      : Int32_t;
                 Msg           : CLAP_Chars_Ptr)
      with Convention => C;

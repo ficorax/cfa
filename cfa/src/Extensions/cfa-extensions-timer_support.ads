@@ -55,7 +55,7 @@ package CfA.Extensions.Timer_Support is
    --  Registers a periodic timer.
    --  The host may adjust the period if it is under a certain threshold.
    --  30 Hz should be allowed.
-   --  Returns true on success.
+   --  Returns True on success.
    --  [main-thread]
 
    type Unregister_Timer_Function is access

@@ -77,7 +77,8 @@ package CfA.Extensions.Draft.Scracth_Memory is
    --  [main-thread & being-activated]
 
    type Access_Scratch_Function is access
-     procedure (Host : Hosts.CLAP_Host_Access)
+     function (Host : Hosts.CLAP_Host_Access)
+               return Void_Ptr
      with Convention => C;
    --  Returns a pointer to the "thread-local" scratch memory.
    --

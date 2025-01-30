@@ -205,7 +205,7 @@ package CfA.Extensions.Context_Menu is
      function (Host    : Hosts.CLAP_Host_Access;
                Target  : CLAP_Context_Menu_Target_Access;
                Builder : CLAP_Context_Menu_Builder_Access)
-               return Boolean
+               return Bool
      with Convention => C;
    --  Insert host's menu items into the menu builder.
    --  If target is null, assume global context.
